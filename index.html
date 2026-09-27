@@ -303,7 +303,14 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Описание</label>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Описание</label>
+                        <!-- Кнопка генерации AI -->
+                        <button type="button" onclick="generateAiDescription()" class="text-xs text-orange-400 hover:text-orange-300 font-semibold flex items-center space-x-1.5 transition bg-orange-500/10 hover:bg-orange-500/20 px-2.5 py-1 rounded-lg border border-orange-500/20">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>Сгенерировать с AI</span>
+                        </button>
+                    </div>
                     <textarea id="add-desc" rows="3" placeholder="Состояние автомобиля, комплектация..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500"></textarea>
                 </div>
 
@@ -727,7 +734,7 @@
             }).join('');
         }
 
-        // Автоматическое сжатие изображений для предотвращения переполнения памяти
+        // Автоматическое сжатие изображений
         function handleImageUpload(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
@@ -746,7 +753,7 @@
                         const canvas = document.createElement('canvas');
                         let width = img.width;
                         let height = img.height;
-                        const maxWidth = 800; // Ограничиваем максимальную ширину
+                        const maxWidth = 800;
 
                         if (width > maxWidth) {
                             height = Math.round((height * maxWidth) / width);
@@ -758,7 +765,6 @@
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
 
-                        // Сжимаем в формат JPEG с качеством 75%
                         const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
                         temporaryUploadedImages.push(compressedDataUrl);
 
@@ -769,6 +775,61 @@
                 };
                 reader.readAsDataURL(files[i]);
             }
+        }
+
+        // Функция генерации описания через ИИ-шаблоны
+        function generateAiDescription() {
+            const brand = document.getElementById('add-brand').value || 'автомобиль';
+            const model = document.getElementById('add-model').value || '';
+            const year = document.getElementById('add-year').value || '';
+            const mileage = document.getElementById('add-mileage').value || '';
+            const transmission = document.getElementById('add-transmission').value || '';
+            const fuel = document.getElementById('add-fuel').value || 'Бензин';
+            const region = document.getElementById('add-region').value || 'Украина';
+
+            if (!document.getElementById('add-brand').value) {
+                alert('Пожалуйста, выберите марку автомобиля для генерации описания!');
+                return;
+            }
+
+            const intros = [
+                `Продается отличный и надежный ${brand} ${model}.`,
+                `Вашему вниманию предлагается ${brand} ${model} в хорошем состоянии.`,
+                `Срочно продам ${brand} ${model}. Автомобиль ухоженный, заслуживает внимания.`
+            ];
+
+            const conditions = [
+                "Машина полностью обслужена, вложений не требует, сел и поехал.",
+                "Технически полностью исправна, двигатель работает ровно, ходовая в норме.",
+                "Салон чистый и аккуратный, в автомобиле не курили. Все системы работают исправно."
+            ];
+
+            const closings = [
+                "Торг уместен у капота. Звоните в любое время!",
+                "Возможен небольшой торг реальному покупателю. Звоните, отвечу на все вопросы.",
+                "Продажа от владельца. Площадкам и автобизнесменам просьба не беспокоить."
+            ];
+
+            const randomIntro = intros[Math.floor(Math.random() * intros.length)];
+            const randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
+            const randomClosing = closings[Math.floor(Math.random() * closings.length)];
+
+            let text = `${randomIntro}\n\n`;
+            
+            let specs = [];
+            if (year) specs.push(`Год выпуска: ${year}`);
+            if (mileage) specs.push(`Пробег: ${mileage} тыс. км`);
+            if (transmission) specs.push(`Коробка передач: ${transmission}`);
+            if (fuel) specs.push(`Тип топлива: ${fuel}`);
+            specs.push(`Регион: ${region}`);
+
+            if (specs.length > 0) {
+                text += `Характеристики:\n• ${specs.join('\n• ')}\n\n`;
+            }
+
+            text += `${randomCondition}\n\n${randomClosing}`;
+
+            document.getElementById('add-desc').value = text;
         }
 
         function openCarModal(id) {
