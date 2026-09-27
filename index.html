@@ -15,9 +15,8 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-orange-500 selection:text-white">
 
     <!-- Header -->
-    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
+    <header class="bg-slate-900/85 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-            <!-- Logo -->
             <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFilters()">
                 <div class="bg-orange-600 text-white w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-xl shadow-lg shadow-orange-600/30">
                     <i class="fa-solid fa-car-side"></i>
@@ -28,23 +27,19 @@
                 </div>
             </div>
 
-            <!-- Desktop Action Buttons -->
             <div class="hidden md:flex items-center space-x-3">
                 <button onclick="openFavoritesModal()" class="relative bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 border border-slate-700">
                     <i class="fa-solid fa-heart text-orange-500"></i>
                     <span>Избранное</span>
                     <span id="favorites-badge" class="bg-orange-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
                 </button>
-                <div id="user-cabinet-container">
-                    <!-- Заполняется динамически -->
-                </div>
+                <div id="user-cabinet-container"></div>
                 <button onclick="openAddModal()" class="bg-orange-600 hover:bg-orange-500 text-white px-5 py-2.5 rounded-xl font-bold transition shadow-lg shadow-orange-600/25 flex items-center space-x-2">
                     <i class="fa-solid fa-plus"></i>
                     <span>Продать авто</span>
                 </button>
             </div>
 
-            <!-- Mobile Menu Button -->
             <div class="flex md:hidden items-center space-x-2">
                 <button onclick="openFavoritesModal()" class="relative bg-slate-800 text-slate-200 p-2.5 rounded-xl border border-slate-700">
                     <i class="fa-solid fa-heart text-orange-500 text-lg"></i>
@@ -56,7 +51,6 @@
             </div>
         </div>
 
-        <!-- Mobile Dropdown Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 py-4 space-y-3">
             <div id="mobile-user-cabinet"></div>
             <button onclick="closeMobileMenu(); openAddModal();" class="w-full bg-orange-600 hover:bg-orange-500 text-white px-4 py-3 rounded-xl font-bold transition shadow-lg shadow-orange-600/25 flex items-center justify-center space-x-2">
@@ -82,10 +76,10 @@
 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Поиск по ключевым словам</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Ключевые слова</label>
                         <div class="relative">
                             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-500 text-sm"></i>
-                            <input type="text" id="filter-search" oninput="filterCars()" placeholder="Например, Camry, электро..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                            <input type="text" id="filter-search" oninput="filterCars()" placeholder="Например, Camry..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
                         </div>
                     </div>
 
@@ -103,9 +97,8 @@
                         </select>
                     </div>
 
-                    <!-- Новый фильтр: Тип кузова -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Тип кузова</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Кузов</label>
                         <select id="filter-body" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
                             <option value="">Любой кузов</option>
                             <option value="Седан">Седан</option>
@@ -118,7 +111,6 @@
                         </select>
                     </div>
 
-                    <!-- Новый фильтр: Привод -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Привод</label>
                         <select id="filter-drive" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
@@ -137,7 +129,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Коробка передач</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Коробка</label>
                         <select id="filter-transmission" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
                             <option value="">Любая коробка</option>
                             <option value="Механика">Механика</option>
@@ -173,7 +165,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Тип топлива</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Топливо</label>
                         <select id="filter-fuel" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
                             <option value="">Любое</option>
                             <option value="Бензин">Бензин</option>
@@ -202,27 +194,41 @@
                 </div>
             </div>
 
-            <div id="cars-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                <!-- Dynamic Content -->
-            </div>
+            <div id="cars-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
         </section>
     </main>
 
     <!-- Car Details Modal -->
     <div id="car-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl relative my-8 animate-in fade-in zoom-in duration-200">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl relative my-8">
             <button onclick="closeCarModal()" class="absolute top-4 right-4 bg-slate-800 hover:bg-slate-700 text-slate-300 w-10 h-10 rounded-full flex items-center justify-center transition z-10">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
-            <div id="modal-content">
-                <!-- Dynamically populated -->
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- Предложение обмена (Модальное окно выбора авто) -->
+    <div id="exchange-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative my-8">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+                <h3 class="text-xl font-bold flex items-center space-x-2">
+                    <i class="fa-solid fa-rotate text-orange-500"></i>
+                    <span>Предложить обмен авто</span>
+                </h3>
+                <button onclick="closeExchangeModal()" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div id="exchange-modal-body" class="space-y-4">
+                <!-- Динамически заполняется -->
             </div>
         </div>
     </div>
 
     <!-- Add Car Modal -->
     <div id="add-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
-        <div id="add-modal-container" class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-5 sm:p-8 shadow-2xl relative my-8 max-h-[85vh] overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-5 sm:p-8 shadow-2xl relative my-8 max-h-[85vh] overflow-y-auto">
             <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
                 <h3 class="text-xl font-bold flex items-center space-x-2">
                     <i class="fa-solid fa-circle-plus text-orange-500"></i>
@@ -249,7 +255,6 @@
                     </div>
                 </div>
 
-                <!-- Новые поля в форме добавления: Кузов и Привод -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Тип кузова</label>
@@ -339,29 +344,27 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Фотографии автомобиля (до 8 шт.)</label>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Фотографии (до 8 шт.)</label>
                     <label for="add-photo-file" class="mt-1 flex flex-col items-center justify-center px-6 pt-5 pb-6 border-2 border-slate-800 border-dashed rounded-xl bg-slate-950 hover:border-orange-500 transition cursor-pointer">
                         <i class="fa-solid fa-cloud-arrow-up text-3xl text-orange-500 mb-2"></i>
-                        <span class="text-sm text-slate-300 text-center" id="file-name-display">Нажмите для выбора нескольких фото (до 8)</span>
-                        <span class="text-xs text-slate-500 mt-1">Автоматическое сжатие для быстрой загрузки</span>
+                        <span class="text-sm text-slate-300 text-center" id="file-name-display">Нажмите для выбора фото</span>
                         <input type="file" id="add-photo-file" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
                     </label>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Ваш номер телефона (для входа в кабинет)</label>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Ваш номер телефона</label>
                     <input type="tel" id="add-phone" required value="+380" placeholder="+380XXXXXXXXX" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
                 </div>
 
                 <div>
                     <div class="flex items-center justify-between mb-1">
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Описание</label>
-                        <button type="button" onclick="generateAiDescription()" class="text-xs text-orange-400 hover:text-orange-300 font-semibold flex items-center space-x-1.5 transition bg-orange-500/10 hover:bg-orange-500/20 px-2.5 py-1 rounded-lg border border-orange-500/20">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-                            <span>Сгенерировать с AI</span>
+                        <button type="button" onclick="generateAiDescription()" class="text-xs text-orange-400 font-semibold bg-orange-500/10 hover:bg-orange-500/20 px-2.5 py-1 rounded-lg border border-orange-500/20">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Сгенерировать с AI
                         </button>
                     </div>
-                    <textarea id="add-desc" rows="3" placeholder="Состояние автомобиля, комплектация..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500"></textarea>
+                    <textarea id="add-desc" rows="3" placeholder="Состояние..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500"></textarea>
                 </div>
 
                 <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-orange-600/30">
@@ -371,7 +374,7 @@
         </div>
     </div>
 
-    <!-- Personal Cabinet Modal -->
+    <!-- Personal Cabinet Modal (с вкладкой обменов) -->
     <div id="cabinet-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
             <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
@@ -383,17 +386,26 @@
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
-            <div class="mb-4 flex items-center justify-between">
-                <span class="text-sm text-slate-400">Ваши активные объявления:</span>
-                <button onclick="logoutUser()" class="text-xs text-red-400 hover:underline"><i class="fa-solid fa-right-from-bracket mr-1"></i> Выйти из аккаунта</button>
+            
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex space-x-2">
+                    <button onclick="switchCabinetTab('cars')" id="tab-btn-cars" class="px-4 py-2 rounded-xl text-xs font-bold bg-orange-600 text-white transition">Мои авто</button>
+                    <button onclick="switchCabinetTab('exchanges')" id="tab-btn-exchanges" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 transition">Предложения обмена <span id="exchanges-count-badge" class="ml-1 bg-orange-500 text-white px-1.5 py-0.5 rounded-full text-[10px]">0</span></button>
+                </div>
+                <button onclick="logoutUser()" class="text-xs text-red-400 hover:underline"><i class="fa-solid fa-right-from-bracket mr-1"></i> Выйти</button>
             </div>
-            <div id="cabinet-cars-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
-                <!-- Заполняется динамически -->
+
+            <div id="cabinet-tab-cars" class="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
+                <!-- Список авто пользователя -->
+            </div>
+
+            <div id="cabinet-tab-exchanges" class="space-y-4 max-h-[50vh] overflow-y-auto pr-2 hidden">
+                <!-- Список предложений обмена -->
             </div>
         </div>
     </div>
 
-    <!-- Auth Modal (Вход по телефону) -->
+    <!-- Auth Modal -->
     <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative my-8">
             <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
@@ -411,7 +423,7 @@
                     <input type="tel" id="login-phone" required value="+380" placeholder="+380XXXXXXXXX" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
                 </div>
                 <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-orange-600/30">
-                    Войти в кабинет
+                    Войти
                 </button>
             </form>
         </div>
@@ -423,15 +435,13 @@
             <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
                 <h3 class="text-xl font-bold flex items-center space-x-2">
                     <i class="fa-solid fa-heart text-orange-500"></i>
-                    <span>Избранные автомобили</span>
+                    <span>Избранное</span>
                 </h3>
                 <button onclick="closeFavoritesModal()" class="text-slate-400 hover:text-white transition">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
-            <div id="favorites-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
-                <!-- Dynamically populated -->
-            </div>
+            <div id="favorites-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-2"></div>
         </div>
     </div>
 
@@ -454,57 +464,44 @@
             'Chrysler': ['300C', 'Grand Voyager', 'Pacifica', 'PT Cruiser'],
             'Citroen': ['Berlingo', 'C-Elysee', 'C3', 'C4', 'C5 Aircross', 'Jumper'],
             'Dodge': ['Caliber', 'Challenger', 'Charger', 'Durango', 'Journey', 'RAM'],
-            'Exeed': ['LX', 'TXL', 'VX'],
-            'Ford': ['EcoSport', 'Edge', 'Escape', 'Explorer', 'Fiesta', 'Focus', 'Fusion', 'Kuga', 'Mondeo', 'Mustang', 'Mustang Mach-E', 'Ranger'],
+            'Ford': ['EcoSport', 'Edge', 'Escape', 'Explorer', 'Fiesta', 'Focus', 'Fusion', 'Kuga', 'Mondeo', 'Mustang', 'Ranger'],
             'Geely': ['Atlas', 'Coolray', 'Emgrand', 'Monjaro', 'Tugella'],
-            'GWM / Haval': ['Dargo', 'H2', 'H6', 'Jolion'],
             'Honda': ['Accord', 'Civic', 'CR-V', 'HR-V', 'Jazz', 'Pilot'],
             'Hyundai': ['Accent', 'Elantra', 'Ioniq 5', 'Kona', 'Palisade', 'Santa Fe', 'Sonata', 'Tucson'],
-            'Infiniti': ['EX', 'FX35', 'FX45', 'G25', 'G35', 'M35', 'Q50', 'Q70', 'QX50', 'QX60', 'QX80'],
-            'Jeep': ['Cherokee', 'Compass', 'Grand Cherokee', 'Renegade', 'Wrangler'],
             'Kia': ['Ceed', 'Cerato', 'EV6', 'K5', 'Niro', 'Optima', 'Picanto', 'Rio', 'Sorento', 'Soul', 'Sportage', 'Stinger'],
-            'Land Rover': ['Defender', 'Discovery', 'Freelander', 'Range Rover', 'Range Rover Evoque', 'Range Rover Sport'],
-            'Lexus': ['ES 250', 'ES 350', 'GS 300', 'GX 460', 'IS 250', 'LS 500', 'LX 470', 'LX 570', 'LX 600', 'NX 200', 'NX 350', 'RX 350', 'RX 450h'],
+            'Lexus': ['ES 250', 'ES 350', 'GS 300', 'GX 460', 'IS 250', 'LS 500', 'LX 570', 'LX 600', 'NX 200', 'RX 350', 'RX 450h'],
             'Mazda': ['2', '3', '6', 'CX-30', 'CX-5', 'CX-9', 'MX-5'],
-            'Mercedes-Benz': ['A-Class', 'C-Class', 'CLA', 'CLS', 'E-Class', 'G-Class', 'GLA', 'GLB', 'GLC', 'GLE', 'GLS', 'S-Class', 'V-Class'],
-            'Mitsubishi': ['ASX', 'Colt', 'Galant', 'L200', 'Lancer', 'Outlander', 'Pajero', 'Pajero Sport'],
-            'Nissan': ['Almera', 'Juke', 'Leaf', 'Maxima', 'Murano', 'Navara', 'Note', 'Pathfinder', 'Patrol', 'Qashqai', 'Rogue', 'Sentra', 'X-Trail'],
-            'Opel': ['Astra', 'Corsa', 'Frontera', 'Insignia', 'Mokka', 'Omega', 'Vectra', 'Zafira'],
-            'Peugeot': ['2008', '208', '3008', '308', '408', '5008', 'Partner'],
+            'Mercedes-Benz': ['A-Class', 'C-Class', 'CLA', 'CLS', 'E-Class', 'G-Class', 'GLA', 'GLC', 'GLE', 'GLS', 'S-Class'],
+            'Mitsubishi': ['ASX', 'Galant', 'L200', 'Lancer', 'Outlander', 'Pajero'],
+            'Nissan': ['Almera', 'Juke', 'Leaf', 'Maxima', 'Murano', 'Qashqai', 'Rogue', 'X-Trail'],
+            'Opel': ['Astra', 'Corsa', 'Insignia', 'Mokka', 'Vectra'],
+            'Peugeot': ['2008', '3008', '308', '5008'],
             'Porsche': ['Cayenne', 'Macan', 'Panamera', 'Taycan', '911'],
-            'Renault': ['Captur', 'Clio', 'Duster', 'Fluence', 'Kadjar', 'Kandgo', 'Koleos', 'Logan', 'Megane', 'Sandero', 'Scenic', 'Symbol', 'Zoe'],
-            'Skoda': ['Fabia', 'Kamiq', 'Karoq', 'Kodiaq', 'Octavia', 'Rapid', 'Superb', 'Yeti'],
-            'Subaru': ['Forester', 'Impreza', 'Legacy', 'Outback', 'Tribeca', 'XV'],
-            'Suzuki': ['Grand Vitara', 'Ignis', 'Jimny', 'Swift', 'SX4', 'Vitara'],
-            'Tesla': ['Model 3', 'Model S', 'Model X', 'Model Y', 'Cybertruck'],
-            'Toyota': ['Auris', 'Avalon', 'Avensis', 'C-HR', 'Camry', 'Corolla', 'FJ Cruiser', 'Highlander', 'Hilux', 'Land Cruiser 100', 'Land Cruiser 200', 'Land Cruiser 300', 'Land Cruiser Prado', 'Prius', 'RAV4', 'Sequoia', 'Sienna', 'Supra', 'Tundra', 'Venza', 'Yaris'],
-            'Volkswagen': ['Arteon', 'Beetle', 'Caddy', 'Golf', 'ID.4', 'ID.6', 'Jetta', 'Multivan', 'Passat', 'Polo', 'T-Roc', 'Tiguan', 'Touareg', 'Touran', 'Transporter'],
-            'Volvo': ['C30', 'S40', 'S60', 'S90', 'V40', 'V60', 'XC40', 'XC60', 'XC90'],
-            'Zeekr': ['001', '009', 'X']
+            'Renault': ['Captur', 'Duster', 'Koleos', 'Logan', 'Megane', 'Sandero'],
+            'Skoda': ['Fabia', 'Karoq', 'Kodiaq', 'Octavia', 'Rapid', 'Superb'],
+            'Subaru': ['Forester', 'Impreza', 'Outback', 'XV'],
+            'Suzuki': ['Grand Vitara', 'Jimny', 'Vitara'],
+            'Tesla': ['Model 3', 'Model S', 'Model X', 'Model Y'],
+            'Toyota': ['Avalon', 'C-HR', 'Camry', 'Corolla', 'Highlander', 'Land Cruiser 200', 'Land Cruiser 300', 'Land Cruiser Prado', 'Prius', 'RAV4', 'Venza', 'Yaris'],
+            'Volkswagen': ['Golf', 'ID.4', 'Jetta', 'Passat', 'Polo', 'Tiguan', 'Touareg'],
+            'Volvo': ['S60', 'XC40', 'XC60', 'XC90']
         };
 
-        const engineVolumes = [
-            '0.6', '0.7', '0.8', '0.9', 
-            '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', 
-            '2.0', '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7', '2.8', '2.9', 
-            '3.0', '3.2', '3.5', '3.6', '3.8', '4.0', '4.2', '4.4', '4.8', '5.0+', 
-            'Электро'
-        ];
+        const engineVolumes = ['1.0', '1.2', '1.4', '1.5', '1.6', '1.8', '2.0', '2.2', '2.4', '2.5', '3.0', '3.5', '4.0', 'Электро'];
 
-        // Добавлены поля bodyType и driveType в начальные авто
         let defaultCars = [
-            { id: 1, brand: 'BMW', model: 'X5', price: 48900, year: 2020, mileage: 62, engine: '3.0', bodyType: 'Внедорожник / Кроссовер', driveType: 'Полный', transmission: 'Автомат', fuel: 'Дизель', region: 'Киев', images: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80'], phone: '+380675553535', desc: 'Идеальное состояние, официальная машина, полная комплектация.' },
-            { id: 2, brand: 'Audi', model: 'A6', price: 32000, year: 2019, mileage: 84, engine: '2.0', bodyType: 'Седан', driveType: 'Полный', transmission: 'DSG', fuel: 'Бензин', region: 'Харьков', images: ['https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80'], phone: '+380501112233', desc: 'Машина вложений не требует. Первый владелец.' },
-            { id: 3, brand: 'Tesla', model: 'Model Y', price: 39500, year: 2022, mileage: 25, engine: 'Электро', bodyType: 'Внедорожник / Кроссовер', driveType: 'Полный', transmission: 'Автомат', fuel: 'Электро', region: 'Киев', images: ['https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80'], phone: '+380639991122', desc: 'Состояние нового электромобиля. Автопилот, батарея в идеале.' },
-            { id: 4, brand: 'Volkswagen', model: 'Passat', price: 18500, year: 2017, mileage: 145, engine: '1.8', bodyType: 'Седан', driveType: 'Передний', transmission: 'Механика', fuel: 'Газ / Бензин', region: 'Львов', images: ['https://images.unsplash.com/photo-1541899481282-d53bffe3c485?auto=format&fit=crop&w=800&q=80'], phone: '+380974443322', desc: 'Надежный семейный седан, ухоженный салон.' }
+            { id: 1, brand: 'BMW', model: 'X5', price: 48900, year: 2020, mileage: 62, engine: '3.0', bodyType: 'Внедорожник / Кроссовер', driveType: 'Полный', transmission: 'Автомат', fuel: 'Дизель', region: 'Киев', images: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80'], phone: '+380675553535', desc: 'Идеальное состояние, официальная машина.' },
+            { id: 2, brand: 'Audi', model: 'A6', price: 32000, year: 2019, mileage: 84, engine: '2.0', bodyType: 'Седан', driveType: 'Полный', transmission: 'DSG', fuel: 'Бензин', region: 'Харьков', images: ['https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80'], phone: '+380501112233', desc: 'Машина вложений не требует.' },
+            { id: 3, brand: 'Tesla', model: 'Model Y', price: 39500, year: 2022, mileage: 25, engine: 'Электро', bodyType: 'Внедорожник / Кроссовер', driveType: 'Полный', transmission: 'Автомат', fuel: 'Электро', region: 'Киев', images: ['https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80'], phone: '+380639991122', desc: 'Состояние нового электромобиля.' },
+            { id: 4, brand: 'Volkswagen', model: 'Passat', price: 18500, year: 2017, mileage: 145, engine: '1.8', bodyType: 'Седан', driveType: 'Передний', transmission: 'Механика', fuel: 'Газ / Бензин', region: 'Львов', images: ['https://images.unsplash.com/photo-1541899481282-d53bffe3c485?auto=format&fit=crop&w=800&q=80'], phone: '+380974443322', desc: 'Надежный семейный седан.' }
         ];
 
         let cars = JSON.parse(localStorage.getItem('atm_cars')) || defaultCars;
         let favorites = JSON.parse(localStorage.getItem('atm_favorites')) || [];
+        let exchanges = JSON.parse(localStorage.getItem('atm_exchanges')) || []; // Массив предложений обмена
         let currentUser = localStorage.getItem('atm_current_user') || null;
         let uploadedImagesBase64 = [];
 
-        // Инициализация при загрузке страницы
         window.onload = function() {
             initBrandSelects();
             initEngineSelects();
@@ -516,7 +513,6 @@
         function initBrandSelects() {
             const filterBrand = document.getElementById('filter-brand');
             const addBrand = document.getElementById('add-brand');
-            
             for (let brand in carModelsData) {
                 filterBrand.innerHTML += `<option value="${brand}">${brand}</option>`;
                 addBrand.innerHTML += `<option value="${brand}">${brand}</option>`;
@@ -526,7 +522,6 @@
         function initEngineSelects() {
             const filterEngine = document.getElementById('filter-engine');
             const addEngine = document.getElementById('add-engine');
-
             engineVolumes.forEach(vol => {
                 filterEngine.innerHTML += `<option value="${vol}">${vol === 'Электро' ? 'Электро' : vol + ' л'}</option>`;
                 addEngine.innerHTML += `<option value="${vol}">${vol === 'Электро' ? 'Электро' : vol + ' л'}</option>`;
@@ -537,7 +532,6 @@
             const brand = document.getElementById('filter-brand').value;
             const modelSelect = document.getElementById('filter-model');
             modelSelect.innerHTML = '<option value="">Все модели</option>';
-
             if (brand && carModelsData[brand]) {
                 carModelsData[brand].forEach(model => {
                     modelSelect.innerHTML += `<option value="${model}">${model}</option>`;
@@ -550,7 +544,6 @@
             const brand = document.getElementById(`${mode}-brand`).value;
             const modelSelect = document.getElementById(`${mode}-model`);
             modelSelect.innerHTML = '<option value="">Выберите модель</option>';
-
             if (brand && carModelsData[brand]) {
                 carModelsData[brand].forEach(model => {
                     modelSelect.innerHTML += `<option value="${model}">${model}</option>`;
@@ -587,18 +580,12 @@
                 const matchRegion = !region || car.region === region;
                 const matchPrice = car.price <= maxPrice;
                 const matchFuel = !fuel || car.fuel === fuel;
-
                 return matchSearch && matchBrand && matchModel && matchBody && matchDrive && matchEngine && matchTransmission && matchRegion && matchPrice && matchFuel;
             });
 
-            // Сортировка
-            if (sortOrder === 'price-asc') {
-                filtered.sort((a, b) => a.price - b.price);
-            } else if (sortOrder === 'price-desc') {
-                filtered.sort((a, b) => b.price - a.price);
-            } else {
-                filtered.sort((a, b) => b.id - a.id); // newest
-            }
+            if (sortOrder === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+            else if (sortOrder === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+            else filtered.sort((a, b) => b.id - a.id);
 
             renderCars(filtered);
         }
@@ -628,7 +615,6 @@
                     <div class="col-span-full py-16 text-center bg-slate-900 border border-slate-800 rounded-2xl">
                         <i class="fa-solid fa-car text-5xl text-slate-600 mb-3"></i>
                         <h3 class="text-lg font-bold text-slate-300">Ничего не найдено</h3>
-                        <p class="text-sm text-slate-500 mt-1">Попробуйте изменить параметры поиска</p>
                     </div>
                 `;
                 return;
@@ -640,7 +626,7 @@
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition flex flex-col group shadow-xl">
                         <div class="relative h-48 overflow-hidden bg-slate-950 cursor-pointer" onclick="openCarModal(${car.id})">
                             <img src="${car.images[0]}" alt="${car.brand} ${car.model}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                            <div class="absolute top-3 right-3 flex items-center space-x-2">
+                            <div class="absolute top-3 right-3">
                                 <button onclick="event.stopPropagation(); toggleFavorite(${car.id})" class="bg-slate-900/80 hover:bg-slate-900 text-white w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md transition border border-slate-700">
                                     <i class="fa-solid fa-heart ${isFav ? 'text-orange-500' : 'text-slate-400'}"></i>
                                 </button>
@@ -656,11 +642,6 @@
                                 <span><i class="fa-solid fa-gauge mr-1 text-orange-500"></i> ${car.mileage} тыс. км</span>
                                 <span><i class="fa-solid fa-gas-pump mr-1 text-orange-500"></i> ${car.fuel}</span>
                             </div>
-                            <div class="flex items-center space-x-2 text-xs text-slate-400 mt-2 pt-2 border-t border-slate-800/60">
-                                <span><i class="fa-solid fa-car-side mr-1 text-slate-500"></i> ${car.bodyType || 'Седан'}</span>
-                                <span>•</span>
-                                <span><i class="fa-solid fa-gears mr-1 text-slate-500"></i> ${car.driveType || 'Передний'}</span>
-                            </div>
                             <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
                                 <span><i class="fa-solid fa-location-dot mr-1 text-orange-500"></i> ${car.region}</span>
                                 <span class="text-orange-400 font-semibold hover:underline">Подробнее &rarr;</span>
@@ -672,11 +653,8 @@
         }
 
         function toggleFavorite(id) {
-            if (favorites.includes(id)) {
-                favorites = favorites.filter(favId => favId !== id);
-            } else {
-                favorites.push(id);
-            }
+            if (favorites.includes(id)) favorites = favorites.filter(favId => favId !== id);
+            else favorites.push(id);
             localStorage.setItem('atm_favorites', JSON.stringify(favorites));
             updateFavoritesUI();
             renderCars(cars);
@@ -692,14 +670,11 @@
             const listContainer = document.getElementById('favorites-list');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-
             const favCars = cars.filter(c => favorites.includes(c.id));
-
             if (favCars.length === 0) {
-                listContainer.innerHTML = `<p class="text-center text-slate-500 py-8">В избранном пока нет автомобилей</p>`;
+                listContainer.innerHTML = `<p class="text-center text-slate-500 py-8">В избранном пока пусто</p>`;
                 return;
             }
-
             listContainer.innerHTML = favCars.map(car => `
                 <div class="flex items-center justify-between bg-slate-950 border border-slate-800 p-3 rounded-xl">
                     <div class="flex items-center space-x-3 cursor-pointer" onclick="closeFavoritesModal(); openCarModal(${car.id})">
@@ -709,9 +684,7 @@
                             <p class="text-xs text-orange-400 font-semibold">$${car.price.toLocaleString()}</p>
                         </div>
                     </div>
-                    <button onclick="toggleFavorite(${car.id}); openFavoritesModal();" class="text-slate-400 hover:text-red-400 p-2">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
+                    <button onclick="toggleFavorite(${car.id}); openFavoritesModal();" class="text-slate-400 hover:text-red-400 p-2"><i class="fa-solid fa-trash"></i></button>
                 </div>
             `).join('');
         }
@@ -737,71 +710,46 @@
                         <div class="text-2xl sm:text-3xl font-extrabold text-orange-400">$${car.price.toLocaleString()}</div>
                     </div>
 
-                    <!-- Фотогалерея -->
                     <div class="space-y-3">
                         <div class="h-64 sm:h-96 rounded-2xl overflow-hidden bg-slate-950 border border-slate-800">
                             <img id="main-modal-img" src="${car.images[0]}" class="w-full h-full object-cover">
                         </div>
                         ${car.images.length > 1 ? `
                             <div class="flex space-x-2 overflow-x-auto pb-2">
-                                ${car.images.map((img, idx) => `
+                                ${car.images.map((img) => `
                                     <img src="${img}" onclick="document.getElementById('main-modal-img').src='${img}'" class="w-20 h-14 object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-orange-500 transition flex-shrink-0">
                                 `).join('')}
                             </div>
                         ` : ''}
                     </div>
 
-                    <!-- Характеристики -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs">
-                        <div>
-                            <span class="text-slate-500 block">Пробег</span>
-                            <span class="font-bold text-white text-sm">${car.mileage} тыс. км</span>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block">Двигатель</span>
-                            <span class="font-bold text-white text-sm">${car.engine === 'Электро' ? 'Электро' : car.engine + ' л'} (${car.fuel})</span>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block">Коробка</span>
-                            <span class="font-bold text-white text-sm">${car.transmission}</span>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block">Регион</span>
-                            <span class="font-bold text-white text-sm">${car.region}</span>
-                        </div>
+                        <div><span class="text-slate-500 block">Пробег</span><span class="font-bold text-white text-sm">${car.mileage} тыс. км</span></div>
+                        <div><span class="text-slate-500 block">Двигатель</span><span class="font-bold text-white text-sm">${car.engine === 'Электро' ? 'Электро' : car.engine + ' л'} (${car.fuel})</span></div>
+                        <div><span class="text-slate-500 block">Коробка</span><span class="font-bold text-white text-sm">${car.transmission}</span></div>
+                        <div><span class="text-slate-500 block">Регион</span><span class="font-bold text-white text-sm">${car.region}</span></div>
                     </div>
 
-                    <!-- Кузов и Привод детально -->
-                    <div class="grid grid-cols-2 gap-3 bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs">
-                        <div>
-                            <span class="text-slate-500 block">Тип кузова</span>
-                            <span class="font-bold text-white text-sm">${car.bodyType || 'Седан'}</span>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block">Привод</span>
-                            <span class="font-bold text-white text-sm">${car.driveType || 'Передний'}</span>
-                        </div>
-                    </div>
-
-                    <!-- Описание -->
                     <div>
                         <h4 class="text-xs uppercase font-bold text-slate-400 mb-2">Описание продавца</h4>
                         <p class="text-sm text-slate-300 bg-slate-950 p-4 rounded-2xl border border-slate-800 leading-relaxed">${car.desc || 'Описание отсутствует.'}</p>
                     </div>
 
-                    <!-- Контактный блок -->
-                    <div class="bg-orange-600/10 border border-orange-500/20 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div>
-                            <span class="text-xs text-orange-400 uppercase font-bold block">Телефон владельца</span>
-                            <span class="text-lg font-bold text-white">${car.phone}</span>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="bg-orange-600/10 border border-orange-500/20 p-4 rounded-2xl flex-grow flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-orange-400 uppercase font-bold block">Телефон владельца</span>
+                                <span class="text-lg font-bold text-white">${car.phone}</span>
+                            </div>
+                            <a href="tel:${car.phone}" class="bg-orange-600 hover:bg-orange-500 text-white font-bold px-5 py-2.5 rounded-xl transition text-xs">Позвонить</a>
                         </div>
-                        <a href="tel:${car.phone}" class="w-full sm:w-auto bg-orange-600 hover:bg-orange-500 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-orange-600/30 text-center">
-                            Позвонить продавцу
-                        </a>
+                        <button onclick="openExchangeModal(${car.id})" class="bg-slate-800 hover:bg-slate-700 text-orange-400 border border-slate-700 px-6 py-4 rounded-2xl font-bold transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-rotate"></i>
+                            <span>Предложить обмен</span>
+                        </button>
                     </div>
                 </div>
             `;
-
             modal.classList.remove('hidden');
             modal.classList.add('flex');
         }
@@ -811,6 +759,175 @@
             document.getElementById('car-modal').classList.remove('flex');
         }
 
+        // --- ЛОГИКА ОБМЕНА АВТОМОБИЛЕЙ ---
+        function openExchangeModal(targetCarId) {
+            if (!currentUser) {
+                alert('Для предложения обмена необходимо войти в личный кабинет по номеру телефона.');
+                closeCarModal();
+                openAuthModal();
+                return;
+            }
+
+            const targetCar = cars.find(c => c.id === targetCarId);
+            const myCars = cars.filter(c => c.phone === currentUser);
+
+            if (targetCar.phone === currentUser) {
+                alert('Вы не можете предложить обмен на свой собственный автомобиль.');
+                return;
+            }
+
+            const body = document.getElementById('exchange-modal-body');
+
+            if (myCars.length === 0) {
+                body.innerHTML = `
+                    <div class="text-center py-6 space-y-3">
+                        <p class="text-sm text-slate-400">У вас нет добавленных автомобилей, которые можно предложить на обмен.</p>
+                        <button onclick="closeExchangeModal(); closeCarModal(); openAddModal();" class="bg-orange-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl">Добавить свое авто</button>
+                    </div>
+                `;
+            } else {
+                body.innerHTML = `
+                    <p class="text-xs text-slate-400">Вы хотите предложить обмен на авто: <b class="text-white">${targetCar.brand} ${targetCar.model} ($${targetCar.price.toLocaleString()})</b></p>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Выберите из ваших машин:</label>
+                        <select id="exchange-my-car-id" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                            ${myCars.map(mc => `<option value="${mc.id}">${mc.brand}${mc.model} (${mc.year} г., $${mc.price.toLocaleString()})</option>`).join('')}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Условия доплаты (опционально)</label>
+                        <input type="text" id="exchange-comment" placeholder="Например: Ключ в ключ или моя доплата $2000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                    </div>
+                    <button onclick="submitExchangeRequest(${targetCarId})" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-orange-600/30">
+                        Отправить предложение владелицу
+                    </button>
+                `;
+            }
+
+            document.getElementById('exchange-modal').classList.remove('hidden');
+            document.getElementById('exchange-modal').classList.add('flex');
+        }
+
+        function closeExchangeModal() {
+            document.getElementById('exchange-modal').classList.add('hidden');
+            document.getElementById('exchange-modal').classList.remove('flex');
+        }
+
+        function submitExchangeRequest(targetCarId) {
+            const myCarId = Number(document.getElementById('exchange-my-car-id').value);
+            const comment = document.getElementById('exchange-comment').value;
+
+            const targetCar = cars.find(c => c.id === targetCarId);
+            const myCar = cars.find(c => c.id === myCarId);
+
+            const newExchange = {
+                id: Date.now(),
+                targetCarId: targetCar.id,
+                targetCarOwnerPhone: targetCar.phone,
+                myCarId: myCar.id,
+                senderPhone: currentUser,
+                comment: comment || 'Без комментариев',
+                status: 'pending' // pending, accepted, rejected
+            };
+
+            exchanges.push(newExchange);
+            localStorage.setItem('atm_exchanges', JSON.stringify(exchanges));
+
+            closeExchangeModal();
+            closeCarModal();
+            alert('Предложение обмена успешно отправлено владельцу автомобиля!');
+        }
+
+        function updateExchangesBadge() {
+            if (!currentUser) return;
+            const incomingExchanges = exchanges.filter(ex => ex.targetCarOwnerPhone === currentUser && ex.status === 'pending');
+            const badge = document.getElementById('exchanges-count-badge');
+            if (badge) badge.innerText = incomingExchanges.length;
+        }
+
+        function switchCabinetTab(tabName) {
+            const carsTab = document.getElementById('cabinet-tab-cars');
+            const exchangesTab = document.getElementById('cabinet-tab-exchanges');
+            const btnCars = document.getElementById('tab-btn-cars');
+            const btnExchanges = document.getElementById('tab-btn-exchanges');
+
+            if (tabName === 'cars') {
+                carsTab.classList.remove('hidden');
+                exchangesTab.classList.add('hidden');
+                btnCars.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-orange-600 text-white transition';
+                btnExchanges.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 transition';
+            } else {
+                carsTab.classList.add('hidden');
+                exchangesTab.classList.remove('hidden');
+                btnExchanges.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-orange-600 text-white transition';
+                btnCars.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 transition';
+                renderExchangesTab();
+            }
+        }
+
+        function renderExchangesTab() {
+            const container = document.getElementById('cabinet-tab-exchanges');
+            const myIncoming = exchanges.filter(ex => ex.targetCarOwnerPhone === currentUser);
+
+            if (myIncoming.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-500 py-8">Входящих предложений обмена пока нет</p>`;
+                return;
+            }
+
+            container.innerHTML = myIncoming.map(ex => {
+                const targetCar = cars.find(c => c.id === ex.targetCarId);
+                const offeredCar = cars.find(c => c.id === ex.myCarId);
+
+                if (!targetCar || !offeredCar) return '';
+
+                let statusBadge = '';
+                if (ex.status === 'pending') {
+                    statusBadge = `<span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-[10px]">Ожидает решения</span>`;
+                } else if (ex.status === 'accepted') {
+                    statusBadge = `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px]">Принято! Тел: ${ex.senderPhone}</span>`;
+                } else {
+                    statusBadge = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded text-[10px]">Отклонено</span>`;
+                }
+
+                return `
+                    <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-slate-400">Предложение обмена</span>
+                            ${statusBadge}
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                                <span class="text-slate-500 block">Ваше авто:</span>
+                                <span class="font-bold text-white">${targetCar.brand} ${targetCar.model}</span>
+                            </div>
+                            <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                                <span class="text-slate-500 block">Предлагают:</span>
+                                <span class="font-bold text-orange-400">${offeredCar.brand} ${offeredCar.model} ($${offeredCar.price.toLocaleString()})</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-300 bg-slate-900 p-2.5 rounded-xl"><b>Условия:</b> ${ex.comment}</p>
+                        ${ex.status === 'pending' ? `
+                            <div class="flex space-x-2 pt-1">
+                                <button onclick="respondExchange(${ex.id}, 'accepted')" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs transition">Принять</button>
+                                <button onclick="respondExchange(${ex.id}, 'rejected')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2 rounded-xl text-xs transition">Отклонить</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function respondExchange(exId, status) {
+            const ex = exchanges.find(e => e.id === exId);
+            if (ex) {
+                ex.status = status;
+                localStorage.setItem('atm_exchanges', JSON.stringify(exchanges));
+                renderExchangesTab();
+                updateExchangesBadge();
+            }
+        }
+
+        // --- ЛОГИКА ДОБАВЛЕНИЯ АВТО И КАБИНЕТА ---
         function openAddModal() {
             document.getElementById('add-modal').classList.remove('hidden');
             document.getElementById('add-modal').classList.add('flex');
@@ -824,17 +941,12 @@
         function handleImageUpload(event) {
             const files = event.target.files;
             if (!files.length) return;
-
             uploadedImagesBase64 = [];
-            const display = document.getElementById('file-name-display');
-            display.innerText = `Загружено файлов: ${Math.min(files.length, 8)}`;
-
+            document.getElementById('file-name-display').innerText = `Загружено файлов: ${Math.min(files.length, 8)}`;
             let count = Math.min(files.length, 8);
             for (let i = 0; i < count; i++) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    uploadedImagesBase64.push(e.target.result);
-                }
+                reader.onload = function(e) { uploadedImagesBase64.push(e.target.result); }
                 reader.readAsDataURL(files[i]);
             }
         }
@@ -843,29 +955,15 @@
             const brand = document.getElementById('add-brand').value;
             const model = document.getElementById('add-model').value;
             const year = document.getElementById('add-year').value;
-            const mileage = document.getElementById('add-mileage').value;
-            const fuel = document.getElementById('add-fuel').value;
-            const body = document.getElementById('add-body').value;
-            const drive = document.getElementById('add-drive').value;
-
             if (!brand || !model) {
-                alert('Пожалуйста, выберите марку и модель автомобиля для генерации AI-описания.');
+                alert('Выберите марку и модель для генерации AI-описания.');
                 return;
             }
-
-            const templates = [
-                toAiString(`Продается отличный ${brand} ${model} ${year} года выпуска в кузове (${body || 'седан'}). Автомобиль в прекрасном техническом состоянии, обслуживался вовремя. Привод — ${drive || 'передний'}, топливо — ${fuel}. Пробег честный, салон ухоженный и чистый. Готов к проверкам на любом СТО. Торг у капота!`),
-                toAiString(`Вашему вниманию предлагается ${brand} ${model} (${year} г.в.). ${body || 'Кузов'} в родной краске, ${drive || 'полный'} привод обеспечивает уверенность на любой дороге. Динамичный, комфортный и надежный автомобиль. Все расходники заменены, вложений не требует. Звоните!`)
-            ];
-
-            document.getElementById('add-desc').value = templates[Math.floor(Math.random() * templates.length)];
+            document.getElementById('add-desc').value = `Продается отличный ${brand} ${model} ${year} года выпуска. Авто в идеальном техническом состоянии, своевременно обслуживалось на фирменном СТО. Салон чистый, не прокурен. Возможен обмен!`;
         }
-
-        function toAiString(str) { return str; }
 
         function handleAddCar(event) {
             event.preventDefault();
-
             const brand = document.getElementById('add-brand').value;
             const model = document.getElementById('add-model').value;
             const bodyType = document.getElementById('add-body').value;
@@ -883,21 +981,19 @@
             const images = uploadedImagesBase64.length > 0 ? uploadedImagesBase64 : ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
 
             const newCar = {
-                id: Date.now(),
-                brand, model, bodyType, driveType, price, year, mileage, engine, transmission, fuel, region, phone, desc, images
+                id: Date.now(), brand, model, bodyType, driveType, price, year, mileage, engine, transmission, fuel, region, phone, desc, images
             };
 
             cars.unshift(newCar);
             localStorage.setItem('atm_cars', JSON.stringify(cars));
 
-            // Автоматический вход под этим телефоном при добавлении объявления
             currentUser = phone;
             localStorage.setItem('atm_current_user', currentUser);
 
             closeAddModal();
             document.getElementById('add-car-form').reset();
             uploadedImagesBase64 = [];
-            document.getElementById('file-name-display').innerText = 'Нажмите для выбора нескольких фото (до 8)';
+            document.getElementById('file-name-display').innerText = 'Нажмите для выбора фото';
 
             renderCars(cars);
             updateUserCabinetUI();
@@ -909,31 +1005,30 @@
             const mobileContainer = document.getElementById('mobile-user-cabinet');
 
             if (currentUser) {
-                const btnHTML = `
-                    <button onclick="openCabinetModal()" class="bg-slate-800 hover:bg-slate-700 text-orange-400 px-4 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 border border-slate-700">
+                container.innerHTML = `
+                    <button onclick="openCabinetModal()" class="relative bg-slate-800 hover:bg-slate-700 text-orange-400 px-4 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 border border-slate-700">
                         <i class="fa-solid fa-user-shield"></i>
                         <span>Кабинет</span>
                     </button>
                 `;
-                container.innerHTML = btnHTML;
                 mobileContainer.innerHTML = `
                     <button onclick="openCabinetModal()" class="w-full bg-slate-800 text-orange-400 px-4 py-3 rounded-xl font-bold transition flex items-center justify-center space-x-2 border border-slate-700">
                         <i class="fa-solid fa-user-shield"></i>
                         <span>Личный кабинет (${currentUser})</span>
                     </button>
                 `;
+                updateExchangesBadge();
             } else {
-                const btnHTML = `
+                container.innerHTML = `
                     <button onclick="openAuthModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 border border-slate-700">
                         <i class="fa-solid fa-right-to-bracket"></i>
                         <span>Вход</span>
                     </button>
                 `;
-                container.innerHTML = btnHTML;
                 mobileContainer.innerHTML = `
                     <button onclick="openAuthModal()" class="w-full bg-slate-800 text-slate-200 px-4 py-3 rounded-xl font-bold transition flex items-center justify-center space-x-2 border border-slate-700">
                         <i class="fa-solid fa-right-to-bracket"></i>
-                        <span>Войти в личный кабинет</span>
+                        <span>Войти</span>
                     </button>
                 `;
             }
@@ -956,7 +1051,7 @@
             localStorage.setItem('atm_current_user', currentUser);
             closeAuthModal();
             updateUserCabinetUI();
-            alert(`Вы успешно вошли как ${phone}`);
+            alert(`Успешный вход под номером ${phone}`);
         }
 
         function logoutUser() {
@@ -964,7 +1059,7 @@
             localStorage.removeItem('atm_current_user');
             closeCabinetModal();
             updateUserCabinetUI();
-            alert('Вы вышли из личного кабинета');
+            alert('Вы вышли из системы');
         }
 
         function openCabinetModal() {
@@ -972,34 +1067,12 @@
                 openAuthModal();
                 return;
             }
-
-            const modal = document.getElementById('cabinet-modal');
             document.getElementById('cabinet-phone-title').innerText = currentUser;
-            const listContainer = document.getElementById('cabinet-cars-list');
-
-            const myCars = cars.filter(c => c.phone === currentUser);
-
-            if (myCars.length === 0) {
-                listContainer.innerHTML = `<p class="text-center text-slate-500 py-8">У вас пока нет активных объявлений</p>`;
-            } else {
-                listContainer.innerHTML = myCars.map(car => `
-                    <div class="flex items-center justify-between bg-slate-950 border border-slate-800 p-3 rounded-xl">
-                        <div class="flex items-center space-x-3 cursor-pointer" onclick="closeCabinetModal(); openCarModal(${car.id})">
-                            <img src="${car.images[0]}" class="w-16 h-12 object-cover rounded-lg">
-                            <div>
-                                <h4 class="font-bold text-white text-sm">${car.brand} ${car.model} (${car.year})</h4>
-                                <p class="text-xs text-orange-400 font-semibold">$${car.price.toLocaleString()} • ${car.region}</p>
-                            </div>
-                        </div>
-                        <button onclick="deleteMyCar(${car.id})" class="text-slate-400 hover:text-red-400 p-2" title="Удалить объявление">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                `).join('');
-            }
-
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            renderCabinetCarsList();
+            switchCabinetTab('cars');
+            updateExchangesBadge();
+            document.getElementById('cabinet-modal').classList.remove('hidden');
+            document.getElementById('cabinet-modal').classList.add('flex');
         }
 
         function closeCabinetModal() {
@@ -1007,12 +1080,35 @@
             document.getElementById('cabinet-modal').classList.remove('flex');
         }
 
+        function renderCabinetCarsList() {
+            const listContainer = document.getElementById('cabinet-tab-cars');
+            const myCars = cars.filter(c => c.phone === currentUser);
+
+            if (myCars.length === 0) {
+                listContainer.innerHTML = `<p class="text-center text-slate-500 py-8">У вас нет активных объявлений</p>`;
+                return;
+            }
+
+            listContainer.innerHTML = myCars.map(car => `
+                <div class="flex items-center justify-between bg-slate-950 border border-slate-800 p-3 rounded-xl">
+                    <div class="flex items-center space-x-3 cursor-pointer" onclick="closeCabinetModal(); openCarModal(${car.id})">
+                        <img src="${car.images[0]}" class="w-16 h-12 object-cover rounded-lg">
+                        <div>
+                            <h4 class="font-bold text-white text-sm">${car.brand} ${car.model} (${car.year})</h4>
+                            <p class="text-xs text-orange-400 font-semibold">$${car.price.toLocaleString()} • ${car.region}</p>
+                        </div>
+                    </div>
+                    <button onclick="deleteMyCar(${car.id})" class="text-slate-400 hover:text-red-400 p-2"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('');
+        }
+
         function deleteMyCar(id) {
-            if (confirm('Вы действительно хотите удалить это объявление?')) {
+            if (confirm('Удалить это объявление?')) {
                 cars = cars.filter(c => c.id !== id);
                 localStorage.setItem('atm_cars', JSON.stringify(cars));
                 renderCars(cars);
-                openCabinetModal();
+                renderCabinetCarsList();
             }
         }
 
