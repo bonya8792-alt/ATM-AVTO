@@ -107,7 +107,6 @@
                         </select>
                     </div>
 
-                    <!-- НОВОЕ: Выбор года ОТ и ДО -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Год выпуска</label>
                         <div class="grid grid-cols-2 gap-2">
@@ -231,7 +230,7 @@
         </div>
     </div>
 
-    <!-- Предложение обмена (Модальное окно выбора авто) -->
+    <!-- Exchange Modal -->
     <div id="exchange-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative my-8">
             <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
@@ -382,9 +381,16 @@
                     </label>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Ваш номер телефона</label>
-                    <input type="tel" id="add-phone" required value="+380" placeholder="+380XXXXXXXXX" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                <!-- Поля для телефона и индивидуального пароля -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Ваш номер телефона</label>
+                        <input type="tel" id="add-phone" required value="+380" placeholder="+380XXXXXXXXX" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Пароль для кабинета</label>
+                        <input type="password" id="add-password" required placeholder="Придумайте пароль" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                    </div>
                 </div>
 
                 <div>
@@ -430,7 +436,7 @@
         </div>
     </div>
 
-    <!-- Auth Modal -->
+    <!-- Auth Modal (Вход по паролю) -->
     <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative my-8">
             <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
@@ -447,6 +453,10 @@
                     <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Номер телефона</label>
                     <input type="tel" id="login-phone" required value="+380" placeholder="+380XXXXXXXXX" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
                 </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Пароль</label>
+                    <input type="password" id="login-password" required placeholder="Введите ваш пароль" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                </div>
                 <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-orange-600/30">
                     Войти
                 </button>
@@ -454,7 +464,7 @@
         </div>
     </div>
 
-    <!-- Favorites Drawer / Modal -->
+    <!-- Favorites Modal -->
     <div id="favorites-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
             <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
@@ -522,6 +532,7 @@
         ];
 
         let cars = JSON.parse(localStorage.getItem('atm_cars')) || defaultCars;
+        let users = JSON.parse(localStorage.getItem('atm_users')) || { '+380675553535': '12345', '+380501112233': '12345', '+380974443322': '12345', '+380631234567': '12345' };
         let favorites = JSON.parse(localStorage.getItem('atm_favorites')) || [];
         let exchanges = JSON.parse(localStorage.getItem('atm_exchanges')) || [];
         let currentUser = localStorage.getItem('atm_current_user') || null;
@@ -530,7 +541,7 @@
         window.onload = function() {
             initBrandSelects();
             initEngineSelects();
-            initYearSelects(); // Генерация списка годов для фильтра
+            initYearSelects();
             renderCars(cars);
             updateFavoritesUI();
             updateUserCabinetUI();
@@ -554,7 +565,6 @@
             });
         }
 
-        // Автоматическое заполнение выпадающих списков годов (от 1990 до текущего 2026)
         function initYearSelects() {
             const yearFromSelect = document.getElementById('filter-year-from');
             const yearToSelect = document.getElementById('filter-year-to');
@@ -616,11 +626,8 @@
                 const matchSearch = (car.brand + ' ' + car.model + ' ' + car.desc).toLowerCase().includes(search);
                 const matchBrand = !brand || car.brand === brand;
                 const matchModel = !model || car.model === model;
-                
-                // Проверка диапазона годов
                 const matchYearFrom = !yearFrom || car.year >= yearFrom;
                 const matchYearTo = !yearTo || car.year <= yearTo;
-
                 const matchBody = !body || car.bodyType === body;
                 const matchDrive = !drive || car.driveType === drive;
                 const matchEngine = !engine || car.engine === engine;
@@ -826,7 +833,7 @@
 
         function openExchangeModal(targetCarId) {
             if (!currentUser) {
-                alert('Для предложения обмена необходимо войти в личный кабинет по номеру телефона.');
+                alert('Для предложения обмена необходимо войти в личный кабинет.');
                 closeCarModal();
                 openAuthModal();
                 return;
@@ -1045,7 +1052,12 @@
             const fuel = document.getElementById('add-fuel').value;
             const region = document.getElementById('add-region').value;
             const phone = document.getElementById('add-phone').value;
+            const password = document.getElementById('add-password').value;
             const desc = document.getElementById('add-desc').value;
+
+            // Регистрируем пользователя или обновляем пароль, если телефон уже есть
+            users[phone] = password;
+            localStorage.setItem('atm_users', JSON.stringify(users));
 
             const images = uploadedImagesBase64.length > 0 ? uploadedImagesBase64 : ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
 
@@ -1066,7 +1078,7 @@
 
             renderCars(cars);
             updateUserCabinetUI();
-            alert('Объявление успешно опубликовано!');
+            alert('Объявление опубликовано, а индивидуальный кабинет успешно создан!');
         }
 
         function updateUserCabinetUI() {
@@ -1116,11 +1128,17 @@
         function handleLogin(event) {
             event.preventDefault();
             const phone = document.getElementById('login-phone').value;
-            currentUser = phone;
-            localStorage.setItem('atm_current_user', currentUser);
-            closeAuthModal();
-            updateUserCabinetUI();
-            alert(`Успешный вход под номером ${phone}`);
+            const password = document.getElementById('login-password').value;
+
+            if (users[phone] && users[phone] === password) {
+                currentUser = phone;
+                localStorage.setItem('atm_current_user', currentUser);
+                closeAuthModal();
+                updateUserCabinetUI();
+                alert(`Успешный вход в кабинет (${phone})!`);
+            } else {
+                alert('Неверный номер телефона или пароль!');
+            }
         }
 
         function logoutUser() {
