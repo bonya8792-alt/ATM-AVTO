@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATM-Авто — Автобазар Украины</title>
     <style>
@@ -21,8 +21,6 @@
         .header-actions { display: flex; gap: 15px; align-items: center; }
         .btn { background-color: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
         .btn:hover { background-color: var(--accent-hover); }
-        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
-        .btn-outline:hover { border-color: var(--accent); }
         .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; width: 100%; flex: 1; }
         .filters { background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         .form-control { width: 100%; padding: 10px 15px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 14px; }
@@ -77,12 +75,10 @@
             </select>
         </div>
 
-        <div id="cars-grid" class="cars-grid">
-            <!-- Список автомобилей загружается динамически -->
-        </div>
+        <div id="cars-grid" class="cars-grid"></div>
     </div>
 
-    <!-- Модальное окно добавления объявления -->
+    <!-- Модальное окно -->
     <div id="add-modal" class="modal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeAddModal()">&times;</button>
@@ -155,7 +151,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Фотографии (выберите до 8 файлов)</label>
+                    <label>Фотографии</label>
                     <input type="file" id="add-photos-input" class="form-control" accept="image/*" multiple onchange="handleImageSelection(event)">
                     <div id="file-name-display" style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Нажмите для выбора фото</div>
                 </div>
@@ -165,7 +161,7 @@
                 </div>
                 <div class="form-group">
                     <label>Описание</label>
-                    <textarea id="add-desc" class="form-control" rows="3" placeholder="Состояние автомобиля, комплектация..."></textarea>
+                    <textarea id="add-desc" class="form-control" rows="3" placeholder="Состояние автомобиля..."></textarea>
                 </div>
                 <button type="submit" class="btn" style="width: 100%; justify-content: center; padding: 12px;">Опубликовать объявление</button>
             </form>
@@ -177,9 +173,9 @@
     </footer>
 
     <script>
-        // НАСТРОЙКИ SUPABASE
+        // ВНИМАНИЕ: Замените SUPABASE_KEY на ваш актуальный публичный анонимный ключ (anon public) из панели Supabase!
         const SUPABASE_URL = 'https://eyvewlhxsczunmrdfcjs.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5dmV3bGh4c2N6dW5tcmRmY2pzIxlcGF5bG9hZCI6eyJwcm9sZSI6ImFub24iLCJpYXQiOjE3OTA1MTU2NTMsImV4cCI6MjEwNjA5MTY1M30._gAqkRGaeyPjaigFJG4vBaSri7pSam5aw8uLrrjN0Vg';
+        const SUPABASE_KEY = 'ВАШ_АКТУАЛЬНЫЙ_ANON_KEY_ИЗ_SUPABASE';
 
         let allCars = [];
         let currentUserPhone = localStorage.getItem('atm_current_user') || '';
@@ -207,9 +203,7 @@
 
         function openAddModal() {
             document.getElementById('add-modal').style.display = 'flex';
-            if(currentUserPhone) {
-                document.getElementById('add-phone').value = currentUserPhone;
-            }
+            if(currentUserPhone) document.getElementById('add-phone').value = currentUserPhone;
         }
 
         function closeAddModal() {
@@ -229,12 +223,9 @@
 
         function updateUserCabinetUI() {
             const info = document.getElementById('user-cabinet-info');
-            if (currentUserPhone) {
-                info.innerText = `Кабинет: ${currentUserPhone}`;
-            }
+            if (currentUserPhone) info.innerText = `Кабинет: ${currentUserPhone}`;
         }
 
-        // Загрузка автомобилей из Supabase
         async function loadCarsFromSupabase() {
             try {
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/cars?select=*&order=created_at.desc`, {
@@ -243,7 +234,7 @@
                         'Authorization': `Bearer ${SUPABASE_KEY}`
                     }
                 });
-                if (!response.ok) throw new Error('Ошибка загрузки данных');
+                if (!response.ok) throw new Error('Ошибка авторизации или загрузки');
                 allCars = await response.json();
                 renderCars(allCars);
             } catch (err) {
@@ -251,10 +242,8 @@
             }
         }
 
-        // Сохранение объявления в Supabase через надежный прямой fetch
         async function handleAddCar(event) {
             event.preventDefault();
-            
             const phoneVal = document.getElementById('add-phone').value;
             if (!currentUserPhone) {
                 currentUserPhone = phoneVal;
@@ -297,7 +286,7 @@
                 closeAddModal();
                 document.getElementById('add-car-form').reset();
                 document.getElementById('add-phone').value = currentUserPhone || '+380';
-                document.getElementById('file-name-display').innerText = 'Нажмите для выбора нескольких фото (до 8)';
+                document.getElementById('file-name-display').innerText = 'Нажмите для выбора фото';
                 document.getElementById('add-model').innerHTML = '<option value="">Сначала выберите марку</option>';
                 temporaryUploadedImages = ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
                 
@@ -305,7 +294,7 @@
                 loadCarsFromSupabase();
             } catch (err) {
                 console.error('Ошибка сохранения:', err);
-                alert('Не удалось сохранить в облако. Проверьте консоль (F12).');
+                alert('Ошибка авторизации ключа API. Проверьте SUPABASE_KEY.');
             }
         }
 
@@ -357,7 +346,6 @@
             renderCars(filtered);
         }
 
-        // Автозагрузка при старте
         updateUserCabinetUI();
         loadCarsFromSupabase();
     </script>
