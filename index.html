@@ -36,7 +36,7 @@
                     <span id="favorites-badge" class="bg-orange-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
                 </button>
                 <div id="user-cabinet-container">
-                    <!-- Заполняется динамически (Кнопка входа или Кабинет) -->
+                    <!-- Заполняется динамически -->
                 </div>
                 <button onclick="openAddModal()" class="bg-orange-600 hover:bg-orange-500 text-white px-5 py-2.5 rounded-xl font-bold transition shadow-lg shadow-orange-600/25 flex items-center space-x-2">
                     <i class="fa-solid fa-plus"></i>
@@ -292,7 +292,7 @@
                     <label for="add-photo-file" class="mt-1 flex flex-col items-center justify-center px-6 pt-5 pb-6 border-2 border-slate-800 border-dashed rounded-xl bg-slate-950 hover:border-orange-500 transition cursor-pointer">
                         <i class="fa-solid fa-cloud-arrow-up text-3xl text-orange-500 mb-2"></i>
                         <span class="text-sm text-slate-300 text-center" id="file-name-display">Нажмите для выбора нескольких фото (до 8)</span>
-                        <span class="text-xs text-slate-500 mt-1">PNG, JPG, WEBP</span>
+                        <span class="text-xs text-slate-500 mt-1">Автоматическое сжатие для быстрой загрузки</span>
                         <input type="file" id="add-photo-file" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
                     </label>
                 </div>
@@ -434,7 +434,6 @@
             'Электро'
         ];
 
-        // Инициализация базы объявлений (с поддержкой localStorage)
         const defaultCars = [
             { id: 1, brand: 'BMW', model: 'X5', price: 48900, year: 2020, mileage: 62, engine: '3.0', transmission: 'Автомат', fuel: 'Дизель', region: 'Киев', images: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80'], phone: '+380675553535', desc: 'Идеальное состояние, официальная машина, полная комплектация.' },
             { id: 2, brand: 'Audi', model: 'A6', price: 32000, year: 2019, mileage: 84, engine: '2.0', transmission: 'DSG', fuel: 'Бензин', region: 'Харьков', images: ['https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80'], phone: '+380501112233', desc: 'Машина вложений не требует. Первый владелец.' },
@@ -454,7 +453,11 @@
         });
 
         function saveCarsToStorage() {
-            localStorage.setItem('atm_cars', JSON.stringify(cars));
+            try {
+                localStorage.setItem('atm_cars', JSON.stringify(cars));
+            } catch (e) {
+                alert('Память устройства заполнена. Попробуйте выбрать меньше фотографий или изображения меньшего размера.');
+            }
         }
 
         function saveFavoritesToStorage() {
@@ -490,7 +493,6 @@
                 `;
                 container.innerHTML = html;
                 mobileContainer.innerHTML = html;
-                // Автозаполняем телефон в форме добавления
                 document.getElementById('add-phone').value = currentUserPhone;
             } else {
                 const html = `
@@ -725,20 +727,47 @@
             }).join('');
         }
 
+        // Автоматическое сжатие изображений для предотвращения переполнения памяти
         function handleImageUpload(event) {
             const files = event.target.files;
-            if (files && files.length > 0) {
-                temporaryUploadedImages = [];
-                const limit = Math.min(files.length, 8);
-                document.getElementById('file-name-display').innerText = `Выбрано фотографий: ${limit}`;
+            if (!files || files.length === 0) return;
 
-                for (let i = 0; i < limit; i++) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        temporaryUploadedImages.push(e.target.result);
+            temporaryUploadedImages = [];
+            const limit = Math.min(files.length, 8);
+            document.getElementById('file-name-display').innerText = `Обработка фото (0/${limit})...`;
+
+            let processedCount = 0;
+
+            for (let i = 0; i < limit; i++) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        const maxWidth = 800; // Ограничиваем максимальную ширину
+
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Сжимаем в формат JPEG с качеством 75%
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+                        temporaryUploadedImages.push(compressedDataUrl);
+
+                        processedCount++;
+                        document.getElementById('file-name-display').innerText = `Готово фото: ${processedCount} из ${limit}`;
                     };
-                    reader.readAsDataURL(files[i]);
-                }
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(files[i]);
             }
         }
 
@@ -852,7 +881,6 @@
             event.preventDefault();
             
             const phoneVal = document.getElementById('add-phone').value;
-            // Автоматически запоминаем пользователя при добавлении объявления
             if (!currentUserPhone) {
                 currentUserPhone = phoneVal;
                 localStorage.setItem('atm_current_user', currentUserPhone);
@@ -876,7 +904,7 @@
             };
 
             cars.unshift(newCar);
-            saveCarsToStorage(); // Сохраняем в память навсегда
+            saveCarsToStorage();
             filterCars();
             closeAddModal();
             document.getElementById('add-car-form').reset();
@@ -884,7 +912,7 @@
             document.getElementById('file-name-display').innerText = 'Нажмите для выбора нескольких фото (до 8)';
             document.getElementById('add-model').innerHTML = '<option value="">Сначала выберите марку</option>';
             temporaryUploadedImages = ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
-            alert('Объявление успешно опубликовано и сохранено!');
+            alert('Объявление успешно опубликовано и надежно сохранено!');
         }
 
         function toggleFavorite(id) {
