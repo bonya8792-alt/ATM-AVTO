@@ -99,11 +99,24 @@
                         </select>
                     </div>
 
-                    <!-- Фильтр по объему двигателя -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Объем двигателя</label>
                         <select id="filter-engine" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
                             <option value="">Любой объем</option>
+                        </select>
+                    </div>
+
+                    <!-- Фильтр по коробке передач -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Коробка передач</label>
+                        <select id="filter-transmission" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                            <option value="">Любая коробка</option>
+                            <option value="Механика">Механика</option>
+                            <option value="Автомат">Автомат</option>
+                            <option value="Робот">Робот</option>
+                            <option value="Вариатор">Вариатор</option>
+                            <option value="Типтроник">Типтроник</option>
+                            <option value="DSG">DSG</option>
                         </select>
                     </div>
 
@@ -234,6 +247,18 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Коробка передач</label>
+                        <select id="add-transmission" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                            <option value="">Выберите коробку</option>
+                            <option value="Механика">Механика</option>
+                            <option value="Автомат">Автомат</option>
+                            <option value="Робот">Робот</option>
+                            <option value="Вариатор">Вариатор</option>
+                            <option value="Типтроник">Типтроник</option>
+                            <option value="DSG">DSG</option>
+                        </select>
+                    </div>
+                    <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Топливо</label>
                         <select id="add-fuel" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
                             <option value="Бензин">Бензин</option>
@@ -244,18 +269,19 @@
                             <option value="Гибрид">Гибрид</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Регион</label>
-                        <select id="add-region" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
-                            <option value="Киев">Киев</option>
-                            <option value="Харьков">Харьков</option>
-                            <option value="Одесса">Одесса</option>
-                            <option value="Днепр">Днепр</option>
-                            <option value="Львов">Львов</option>
-                            <option value="Запорожье">Запорожье</option>
-                            <option value="Винница">Винница</option>
-                        </select>
-                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Регион</label>
+                    <select id="add-region" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                        <option value="Киев">Киев</option>
+                        <option value="Харьков">Харьков</option>
+                        <option value="Одесса">Одесса</option>
+                        <option value="Днепр">Днепр</option>
+                        <option value="Львов">Львов</option>
+                        <option value="Запорожье">Запорожье</option>
+                        <option value="Винница">Винница</option>
+                    </select>
                 </div>
 
                 <div>
@@ -351,7 +377,6 @@
             'Zeekr': ['001', '009', 'X']
         };
 
-        // Полный спектр объемов двигателей
         const engineVolumes = [
             '0.6', '0.7', '0.8', '0.9', 
             '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', 
@@ -361,14 +386,14 @@
         ];
 
         let cars = [
-            { id: 1, brand: 'BMW', model: 'X5', price: 48900, year: 2020, mileage: 62, engine: '3.0', fuel: 'Дизель', region: 'Киев', image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80', phone: '+380675553535', desc: 'Идеальное состояние, официальная машина, полная комплектация.' },
-            { id: 2, brand: 'Audi', model: 'A6', price: 32000, year: 2019, mileage: 84, engine: '2.0', fuel: 'Бензин', region: 'Харьков', image: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80', phone: '+380501112233', desc: 'Машина вложений не требует. Первый владелец.' },
-            { id: 3, brand: 'Tesla', model: 'Model Y', price: 39500, year: 2022, mileage: 25, engine: 'Электро', fuel: 'Электро', region: 'Киев', image: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80', phone: '+380639991122', desc: 'Состояние нового электромобиля. Автопилот, батарея в идеале.' },
-            { id: 4, brand: 'Volkswagen', model: 'Passat', price: 18500, year: 2017, mileage: 145, engine: '1.8', fuel: 'Газ / Бензин', region: 'Львов', image: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80', phone: '+380684445566', desc: 'Установлено качественное итальянское ГБО, расход радует.' },
-            { id: 5, brand: 'Toyota', model: 'Camry', price: 27800, year: 2021, mileage: 41, engine: '2.5', fuel: 'Гибрид', region: 'Днепр', image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=800&q=80', phone: '+380993332211', desc: 'Надежный городской седан в превосходном состоянии.' },
-            { id: 6, brand: 'BYD', model: 'Song Plus', price: 24500, year: 2023, mileage: 15, engine: '1.5', fuel: 'Гибрид', region: 'Одесса', image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80', phone: '+380678889900', desc: 'Современный китайский кроссовер, запас хода на электричестве до 100 км.' },
-            { id: 7, brand: 'Zeekr', model: '001', price: 41000, year: 2023, mileage: 18, engine: 'Электро', fuel: 'Электро', region: 'Киев', image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80', phone: '+380931234578', desc: 'Премиальный электрокар, разгон до 100 за 3.8 секунды, полный привод.' },
-            { id: 8, brand: 'Skoda', model: 'Octavia', price: 14200, year: 2014, mileage: 185, engine: '1.6', fuel: 'Газ', region: 'Запорожье', image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80', phone: '+380504567890', desc: 'Экономичная рабочая лошадка, двигатель работает идеально как на бензине, так и на газе.' }
+            { id: 1, brand: 'BMW', model: 'X5', price: 48900, year: 2020, mileage: 62, engine: '3.0', transmission: 'Автомат', fuel: 'Дизель', region: 'Киев', image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80', phone: '+380675553535', desc: 'Идеальное состояние, официальная машина, полная комплектация.' },
+            { id: 2, brand: 'Audi', model: 'A6', price: 32000, year: 2019, mileage: 84, engine: '2.0', transmission: 'DSG', fuel: 'Бензин', region: 'Харьков', image: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80', phone: '+380501112233', desc: 'Машина вложений не требует. Первый владелец.' },
+            { id: 3, brand: 'Tesla', model: 'Model Y', price: 39500, year: 2022, mileage: 25, engine: 'Электро', transmission: 'Автомат', fuel: 'Электро', region: 'Киев', image: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80', phone: '+380639991122', desc: 'Состояние нового электромобиля. Автопилот, батарея в идеале.' },
+            { id: 4, brand: 'Volkswagen', model: 'Passat', price: 18500, year: 2017, mileage: 145, engine: '1.8', transmission: 'Механика', fuel: 'Газ / Бензин', region: 'Львов', image: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80', phone: '+380684445566', desc: 'Установлено качественное итальянское ГБО, расход радует.' },
+            { id: 5, brand: 'Toyota', model: 'Camry', price: 27800, year: 2021, mileage: 41, engine: '2.5', transmission: 'Вариатор', fuel: 'Гибрид', region: 'Днепр', image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=800&q=80', phone: '+380993332211', desc: 'Надежный городской седан в превосходном состоянии.' },
+            { id: 6, brand: 'BYD', model: 'Song Plus', price: 24500, year: 2023, mileage: 15, engine: '1.5', transmission: 'Робот', fuel: 'Гибрид', region: 'Одесса', image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80', phone: '+380678889900', desc: 'Современный китайский кроссовер, запас хода на электричестве до 100 км.' },
+            { id: 7, brand: 'Zeekr', model: '001', price: 41000, year: 2023, mileage: 18, engine: 'Электро', transmission: 'Автомат', fuel: 'Электро', region: 'Киев', image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80', phone: '+380931234578', desc: 'Премиальный электрокар, разгон до 100 за 3.8 секунды, полный привод.' },
+            { id: 8, brand: 'Skoda', model: 'Octavia', price: 14200, year: 2014, mileage: 185, engine: '1.6', transmission: 'Механика', fuel: 'Газ', region: 'Запорожье', image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80', phone: '+380504567890', desc: 'Экономичная рабочая лошадка, двигатель работает идеально как на бензине, так и на газе.' }
         ];
 
         let favorites = [];
@@ -398,22 +423,20 @@
         function initSelects() {
             const brands = Object.keys(carModelsData).sort();
             
-            // Марки для фильтра
+            // Марки
             const filterBrandSelect = document.getElementById('filter-brand');
             filterBrandSelect.innerHTML = '<option value="">Все марки</option>' + 
                 brands.map(b => `<option value="${b}">${b}</option>`).join('');
 
-            // Марки для формы добавления
             const addBrandSelect = document.getElementById('add-brand');
             addBrandSelect.innerHTML = '<option value="">Выберите марку</option>' + 
                 brands.map(b => `<option value="${b}">${b}</option>`).join('');
 
-            // Объемы двигателей для фильтра
+            // Объемы двигателей
             const filterEngineSelect = document.getElementById('filter-engine');
             filterEngineSelect.innerHTML = '<option value="">Любой объем</option>' + 
                 engineVolumes.map(vol => `<option value="${vol}">${vol === 'Электро' ? 'Электро' : vol + ' л'}</option>`).join('');
 
-            // Объемы двигателей для формы добавления
             const addEngineSelect = document.getElementById('add-engine');
             addEngineSelect.innerHTML = '<option value="">Выберите объем</option>' + 
                 engineVolumes.map(vol => `<option value="${vol}">${vol === 'Электро' ? 'Электро' : vol + ' л'}</option>`).join('');
@@ -454,17 +477,19 @@
             const brandVal = document.getElementById('filter-brand').value;
             const modelVal = document.getElementById('filter-model').value;
             const engineVal = document.getElementById('filter-engine').value;
+            const transmissionVal = document.getElementById('filter-transmission').value;
             const regionVal = document.getElementById('filter-region').value;
             const priceVal = Number(document.getElementById('filter-price').value);
             const fuelVal = document.getElementById('filter-fuel').value;
             const sortVal = document.getElementById('sort-order').value;
 
             let filtered = cars.filter(car => {
-                const fullText = `${car.brand} ${car.model} ${car.fuel} ${car.engine} ${car.desc}`.toLowerCase();
+                const fullText = `${car.brand} ${car.model} ${car.fuel} ${car.engine} ${car.transmission} ${car.desc}`.toLowerCase();
                 if (searchTxt && !fullText.includes(searchTxt)) return false;
                 if (brandVal && car.brand !== brandVal) return false;
                 if (modelVal && car.model !== modelVal) return false;
                 if (engineVal && car.engine !== engineVal) return false;
+                if (transmissionVal && car.transmission !== transmissionVal) return false;
                 if (regionVal && car.region !== regionVal) return false;
                 if (car.price > priceVal) return false;
                 if (fuelVal && car.fuel !== fuelVal) return false;
@@ -519,7 +544,7 @@
                                 <div><i class="fa-solid fa-calendar text-orange-500 mr-1"></i> ${car.year} г.</div>
                                 <div><i class="fa-solid fa-road text-orange-500 mr-1"></i> ${car.mileage} тыс. км</div>
                                 <div><i class="fa-solid fa-gauge-high text-orange-500 mr-1"></i> ${car.engine === 'Электро' ? 'Электро' : car.engine + ' л'}</div>
-                                <div><i class="fa-solid fa-gas-pump text-orange-500 mr-1"></i> ${car.fuel}</div>
+                                <div><i class="fa-solid fa-gears text-orange-500 mr-1"></i> ${car.transmission}</div>
                             </div>
                             <p class="text-xs text-slate-400 line-clamp-2 mb-4 flex-grow">${car.desc}</p>
                             <button onclick="openCarModal(${car.id})" class="w-full bg-slate-800 hover:bg-orange-600 hover:text-white text-slate-200 text-sm font-bold py-2.5 rounded-xl transition border border-slate-700 hover:border-orange-600">
@@ -579,8 +604,19 @@
                             <span class="font-bold text-white">${car.engine === 'Электро' ? 'Электро' : car.engine + ' л'}</span>
                         </div>
                         <div>
+                            <span class="block text-xs text-slate-500 uppercase font-semibold">Коробка</span>
+                            <span class="font-bold text-white">${car.transmission}</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-950 p-4 rounded-2xl border border-slate-800 text-sm">
+                        <div>
                             <span class="block text-xs text-slate-500 uppercase font-semibold">Топливо</span>
                             <span class="font-bold text-white">${car.fuel}</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-slate-500 uppercase font-semibold">Регион</span>
+                            <span class="font-bold text-white">${car.region}</span>
                         </div>
                     </div>
 
@@ -639,6 +675,7 @@
                 year: Number(document.getElementById('add-year').value),
                 mileage: Number(document.getElementById('add-mileage').value),
                 engine: document.getElementById('add-engine').value,
+                transmission: document.getElementById('add-transmission').value,
                 fuel: document.getElementById('add-fuel').value,
                 region: document.getElementById('add-region').value,
                 image: temporaryUploadedImage,
@@ -705,6 +742,7 @@
             document.getElementById('filter-brand').value = '';
             document.getElementById('filter-model').innerHTML = '<option value="">Все модели</option>';
             document.getElementById('filter-engine').value = '';
+            document.getElementById('filter-transmission').value = '';
             document.getElementById('filter-region').value = '';
             document.getElementById('filter-price').value = 150000;
             document.getElementById('filter-fuel').value = '';
