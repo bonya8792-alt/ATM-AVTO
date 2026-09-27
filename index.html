@@ -76,6 +76,16 @@
 
                 <div class="space-y-4">
                     <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Категория</label>
+                        <select id="filter-category" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                            <option value="">Все категории</option>
+                            <option value="Авто">Авто</option>
+                            <option value="Авто нерастаможенные">Авто нерастаможенные</option>
+                            <option value="Авто после ДТП">Авто после ДТП</option>
+                        </select>
+                    </div>
+
+                    <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Ключевые слова</label>
                         <div class="relative">
                             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-500 text-sm"></i>
@@ -240,6 +250,15 @@
             </div>
 
             <form id="add-car-form" onsubmit="handleAddCar(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Категория</label>
+                    <select id="add-category" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                        <option value="Авто">Авто</option>
+                        <option value="Авто нерастаможенные">Авто нерастаможенные</option>
+                        <option value="Авто после ДТП">Авто после ДТП</option>
+                    </select>
+                </div>
+
                 <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Марка</label>
@@ -374,7 +393,7 @@
         </div>
     </div>
 
-    <!-- Personal Cabinet Modal (с вкладкой обменов) -->
+    <!-- Personal Cabinet Modal -->
     <div id="cabinet-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
             <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
@@ -395,13 +414,8 @@
                 <button onclick="logoutUser()" class="text-xs text-red-400 hover:underline"><i class="fa-solid fa-right-from-bracket mr-1"></i> Выйти</button>
             </div>
 
-            <div id="cabinet-tab-cars" class="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
-                <!-- Список авто пользователя -->
-            </div>
-
-            <div id="cabinet-tab-exchanges" class="space-y-4 max-h-[50vh] overflow-y-auto pr-2 hidden">
-                <!-- Список предложений обмена -->
-            </div>
+            <div id="cabinet-tab-cars" class="space-y-4 max-h-[50vh] overflow-y-auto pr-2"></div>
+            <div id="cabinet-tab-exchanges" class="space-y-4 max-h-[50vh] overflow-y-auto pr-2 hidden"></div>
         </div>
     </div>
 
@@ -490,15 +504,15 @@
         const engineVolumes = ['1.0', '1.2', '1.4', '1.5', '1.6', '1.8', '2.0', '2.2', '2.4', '2.5', '3.0', '3.5', '4.0', 'Электро'];
 
         let defaultCars = [
-            { id: 1, brand: 'BMW', model: 'X5', price: 48900, year: 2020, mileage: 62, engine: '3.0', bodyType: 'Внедорожник / Кроссовер', driveType: 'Полный', transmission: 'Автомат', fuel: 'Дизель', region: 'Киев', images: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80'], phone: '+380675553535', desc: 'Идеальное состояние, официальная машина.' },
-            { id: 2, brand: 'Audi', model: 'A6', price: 32000, year: 2019, mileage: 84, engine: '2.0', bodyType: 'Седан', driveType: 'Полный', transmission: 'DSG', fuel: 'Бензин', region: 'Харьков', images: ['https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80'], phone: '+380501112233', desc: 'Машина вложений не требует.' },
-            { id: 3, brand: 'Tesla', model: 'Model Y', price: 39500, year: 2022, mileage: 25, engine: 'Электро', bodyType: 'Внедорожник / Кроссовер', driveType: 'Полный', transmission: 'Автомат', fuel: 'Электро', region: 'Киев', images: ['https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80'], phone: '+380639991122', desc: 'Состояние нового электромобиля.' },
-            { id: 4, brand: 'Volkswagen', model: 'Passat', price: 18500, year: 2017, mileage: 145, engine: '1.8', bodyType: 'Седан', driveType: 'Передний', transmission: 'Механика', fuel: 'Газ / Бензин', region: 'Львов', images: ['https://images.unsplash.com/photo-1541899481282-d53bffe3c485?auto=format&fit=crop&w=800&q=80'], phone: '+380974443322', desc: 'Надежный семейный седан.' }
+            { id: 1, category: 'Авто', brand: 'BMW', model: 'X5', price: 48900, year: 2020, mileage: 62, engine: '3.0', bodyType: 'Внедорожник / Кроссовер', driveType: 'Полный', transmission: 'Автомат', fuel: 'Дизель', region: 'Киев', images: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80'], phone: '+380675553535', desc: 'Идеальное состояние, официальная машина.' },
+            { id: 2, category: 'Авто', brand: 'Audi', model: 'A6', price: 32000, year: 2019, mileage: 84, engine: '2.0', bodyType: 'Седан', driveType: 'Полный', transmission: 'DSG', fuel: 'Бензин', region: 'Харьков', images: ['https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80'], phone: '+380501112233', desc: 'Машина вложений не требует.' },
+            { id: 3, category: 'Авто нерастаможенные', brand: 'Volkswagen', model: 'Passat', price: 6500, year: 2012, mileage: 210, engine: '2.0', bodyType: 'Универсал', driveType: 'Передний', transmission: 'Механика', fuel: 'Дизель', region: 'Львов', images: ['https://images.unsplash.com/photo-1541899481282-d53bffe3c485?auto=format&fit=crop&w=800&q=80'], phone: '+380974443322', desc: 'Пригнан под растаможку или на запчасти.' },
+            { id: 4, category: 'Авто после ДТП', brand: 'Ford', model: 'Focus', price: 4200, year: 2016, mileage: 130, engine: '1.6', bodyType: 'Хэтчбек', driveType: 'Передний', transmission: 'Автомат', fuel: 'Бензин', region: 'Одесса', images: ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'], phone: '+380631234567', desc: 'Удар в переднюю часть, геометрия целая, радиаторы под замену.' }
         ];
 
         let cars = JSON.parse(localStorage.getItem('atm_cars')) || defaultCars;
         let favorites = JSON.parse(localStorage.getItem('atm_favorites')) || [];
-        let exchanges = JSON.parse(localStorage.getItem('atm_exchanges')) || []; // Массив предложений обмена
+        let exchanges = JSON.parse(localStorage.getItem('atm_exchanges')) || [];
         let currentUser = localStorage.getItem('atm_current_user') || null;
         let uploadedImagesBase64 = [];
 
@@ -557,6 +571,7 @@
         }
 
         function filterCars() {
+            const category = document.getElementById('filter-category').value;
             const search = document.getElementById('filter-search').value.toLowerCase();
             const brand = document.getElementById('filter-brand').value;
             const model = document.getElementById('filter-model').value;
@@ -570,6 +585,9 @@
             const sortOrder = document.getElementById('sort-order').value;
 
             let filtered = cars.filter(car => {
+                // Если у старых объявлений нет категории, по умолчанию считаем их "Авто"
+                const carCat = car.category || 'Авто';
+                const matchCategory = !category || carCat === category;
                 const matchSearch = (car.brand + ' ' + car.model + ' ' + car.desc).toLowerCase().includes(search);
                 const matchBrand = !brand || car.brand === brand;
                 const matchModel = !model || car.model === model;
@@ -580,7 +598,7 @@
                 const matchRegion = !region || car.region === region;
                 const matchPrice = car.price <= maxPrice;
                 const matchFuel = !fuel || car.fuel === fuel;
-                return matchSearch && matchBrand && matchModel && matchBody && matchDrive && matchEngine && matchTransmission && matchRegion && matchPrice && matchFuel;
+                return matchCategory && matchSearch && matchBrand && matchModel && matchBody && matchDrive && matchEngine && matchTransmission && matchRegion && matchPrice && matchFuel;
             });
 
             if (sortOrder === 'price-asc') filtered.sort((a, b) => a.price - b.price);
@@ -591,6 +609,7 @@
         }
 
         function resetFilters() {
+            document.getElementById('filter-category').value = '';
             document.getElementById('filter-search').value = '';
             document.getElementById('filter-brand').value = '';
             document.getElementById('filter-model').innerHTML = '<option value="">Все модели</option>';
@@ -622,10 +641,20 @@
 
             grid.innerHTML = listToRender.map(car => {
                 const isFav = favorites.includes(car.id);
+                const carCat = car.category || 'Авто';
+                
+                // Бейджик категории для карточки
+                let catBadgeColor = 'bg-orange-500/20 text-orange-400 border-orange-500/30';
+                if (carCat === 'Авто нерастаможенные') catBadgeColor = 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+                if (carCat === 'Авто после ДТП') catBadgeColor = 'bg-red-500/20 text-red-400 border-red-500/30';
+
                 return `
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition flex flex-col group shadow-xl">
                         <div class="relative h-48 overflow-hidden bg-slate-950 cursor-pointer" onclick="openCarModal(${car.id})">
                             <img src="${car.images[0]}" alt="${car.brand} ${car.model}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            <div class="absolute top-3 left-3">
+                                <span class="text-[10px] font-bold px-2.5 py-1 rounded-lg border backdrop-blur-md ${catBadgeColor}">${carCat}</span>
+                            </div>
                             <div class="absolute top-3 right-3">
                                 <button onclick="event.stopPropagation(); toggleFavorite(${car.id})" class="bg-slate-900/80 hover:bg-slate-900 text-white w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md transition border border-slate-700">
                                     <i class="fa-solid fa-heart ${isFav ? 'text-orange-500' : 'text-slate-400'}"></i>
@@ -699,13 +728,17 @@
             if (!car) return;
             const modal = document.getElementById('car-modal');
             const container = document.getElementById('modal-content');
+            const carCat = car.category || 'Авто';
 
             container.innerHTML = `
                 <div class="p-6 sm:p-8 space-y-6">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                            <span class="text-xs uppercase font-bold text-orange-500 tracking-wider">${car.region} • ${car.year} г.</span>
-                            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">${car.brand} ${car.model}</h2>
+                            <div class="flex items-center space-x-2 mb-1">
+                                <span class="text-xs uppercase font-bold text-orange-500 tracking-wider">${car.region} • ${car.year} г.</span>
+                                <span class="bg-slate-800 text-slate-300 text-[10px] font-semibold px-2 py-0.5 rounded">${carCat}</span>
+                            </div>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">${car.brand} ${car.model}</h2>
                         </div>
                         <div class="text-2xl sm:text-3xl font-extrabold text-orange-400">$${car.price.toLocaleString()}</div>
                     </div>
@@ -799,7 +832,7 @@
                         <input type="text" id="exchange-comment" placeholder="Например: Ключ в ключ или моя доплата $2000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
                     </div>
                     <button onclick="submitExchangeRequest(${targetCarId})" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-orange-600/30">
-                        Отправить предложение владелицу
+                        Отправить предложение владельцу
                     </button>
                 `;
             }
@@ -827,7 +860,7 @@
                 myCarId: myCar.id,
                 senderPhone: currentUser,
                 comment: comment || 'Без комментариев',
-                status: 'pending' // pending, accepted, rejected
+                status: 'pending'
             };
 
             exchanges.push(newExchange);
@@ -955,15 +988,21 @@
             const brand = document.getElementById('add-brand').value;
             const model = document.getElementById('add-model').value;
             const year = document.getElementById('add-year').value;
+            const category = document.getElementById('add-category').value;
             if (!brand || !model) {
                 alert('Выберите марку и модель для генерации AI-описания.');
                 return;
             }
-            document.getElementById('add-desc').value = `Продается отличный ${brand} ${model} ${year} года выпуска. Авто в идеальном техническом состоянии, своевременно обслуживалось на фирменном СТО. Салон чистый, не прокурен. Возможен обмен!`;
+            let extra = 'Авто в отличном техническом состоянии.';
+            if (category === 'Авто нерастаможенные') extra = 'Авто на европейской регистрации, документы для езды в наличии.';
+            if (category === 'Авто после ДТП') extra = 'Повреждения видны на фото, мотор и коробка заводятся.';
+
+            document.getElementById('add-desc').value = `Продается ${brand} ${model} (${year} г.). Категория: ${category}. ${extra} Возможен обмен!`;
         }
 
         function handleAddCar(event) {
             event.preventDefault();
+            const category = document.getElementById('add-category').value;
             const brand = document.getElementById('add-brand').value;
             const model = document.getElementById('add-model').value;
             const bodyType = document.getElementById('add-body').value;
@@ -981,7 +1020,7 @@
             const images = uploadedImagesBase64.length > 0 ? uploadedImagesBase64 : ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
 
             const newCar = {
-                id: Date.now(), brand, model, bodyType, driveType, price, year, mileage, engine, transmission, fuel, region, phone, desc, images
+                id: Date.now(), category, brand, model, bodyType, driveType, price, year, mileage, engine, transmission, fuel, region, phone, desc, images
             };
 
             cars.unshift(newCar);
