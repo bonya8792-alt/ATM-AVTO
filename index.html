@@ -3,247 +3,944 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATM-Авто — Автобазар Украины</title>
+    <title>АТМ-Авто — Автобазар Украины</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --bg-color: #0f1115;
-            --card-bg: #181c24;
-            --accent: #ff6600;
-            --accent-hover: #e05b00;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --border-color: #2a303c;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
-        header { background-color: var(--card-bg); border-bottom: 1px solid var(--border-color); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 24px; font-weight: bold; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        .header-actions { display: flex; gap: 15px; align-items: center; }
-        .btn { background-color: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
-        .btn:hover { background-color: var(--accent-hover); }
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; width: 100%; flex: 1; }
-        .filters { background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .form-control { width: 100%; padding: 10px 15px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 14px; }
-        .form-control:focus { border-color: var(--accent); outline: none; }
-        .cars-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .car-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; }
-        .car-card:hover { transform: translateY(-3px); border-color: var(--accent); }
-        .car-img { height: 180px; width: 100%; background-size: cover; background-position: center; background-color: #222; }
-        .car-info { padding: 15px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-        .car-price { font-size: 20px; font-weight: bold; color: var(--accent); }
-        .car-title { font-size: 16px; font-weight: 650; }
-        .car-details { font-size: 13px; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 10px; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; overflow-y: auto; }
-        .modal-content { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; width: 100%; max-width: 600px; padding: 30px; position: relative; max-height: 90vh; overflow-y: auto; }
-        .close-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; }
-        .close-modal:hover { color: var(--text-main); }
-        .modal-title { font-size: 22px; font-weight: bold; margin-bottom: 20px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--text-muted); }
-        footer { background: var(--card-bg); border-top: 1px solid var(--border-color); text-align: center; padding: 20px; color: var(--text-muted); font-size: 14px; margin-top: auto; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-orange-500 selection:text-white">
 
-    <header>
-        <a href="#" class="logo">🚗 ATM-Авто</a>
-        <div class="header-actions">
-            <span id="user-cabinet-info" style="font-size: 14px; color: var(--text-muted);"></span>
-            <button class="btn" onclick="openAddModal()">+ Подать объявление</button>
+    <!-- Header -->
+    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFilters()">
+                <div class="bg-orange-600 text-white w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-xl shadow-lg shadow-orange-600/30">
+                    <i class="fa-solid fa-car-side"></i>
+                </div>
+                <div>
+                    <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">АТМ-<span class="text-orange-500">Авто</span></span>
+                    <span class="block text-[9px] sm:text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Автобазар Украины</span>
+                </div>
+            </div>
+
+            <!-- Desktop Action Buttons -->
+            <div class="hidden md:flex items-center space-x-3">
+                <button onclick="openFavoritesModal()" class="relative bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 border border-slate-700">
+                    <i class="fa-solid fa-heart text-orange-500"></i>
+                    <span>Избранное</span>
+                    <span id="favorites-badge" class="bg-orange-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
+                <div id="user-cabinet-container">
+                    <!-- Заполняется динамически -->
+                </div>
+                <button onclick="openAddModal()" class="bg-orange-600 hover:bg-orange-500 text-white px-5 py-2.5 rounded-xl font-bold transition shadow-lg shadow-orange-600/25 flex items-center space-x-2">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Продать авто</span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="flex md:hidden items-center space-x-2">
+                <button onclick="openFavoritesModal()" class="relative bg-slate-800 text-slate-200 p-2.5 rounded-xl border border-slate-700">
+                    <i class="fa-solid fa-heart text-orange-500 text-lg"></i>
+                    <span id="favorites-badge-mobile" class="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
+                <button onclick="toggleMobileMenu()" class="bg-slate-800 text-slate-200 p-2.5 rounded-xl border border-slate-700">
+                    <i id="mobile-menu-icon" class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 py-4 space-y-3">
+            <div id="mobile-user-cabinet"></div>
+            <button onclick="closeMobileMenu(); openAddModal();" class="w-full bg-orange-600 hover:bg-orange-500 text-white px-4 py-3 rounded-xl font-bold transition shadow-lg shadow-orange-600/25 flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-plus"></i>
+                <span>Продать авто</span>
+            </button>
         </div>
     </header>
 
-    <div class="container">
-        <div class="filters">
-            <select id="filter-brand" class="form-control" onchange="filterCars()">
-                <option value="">Все марки</option>
-                <option value="BMW">BMW</option>
-                <option value="Audi">Audi</option>
-                <option value="Mercedes-Benz">Mercedes-Benz</option>
-                <option value="Volkswagen">Volkswagen</option>
-                <option value="Toyota">Toyota</option>
-                <option value="Skoda">Skoda</option>
-            </select>
-            <input type="text" id="filter-search" class="form-control" placeholder="Поиск по модели..." oninput="filterCars()">
-            <select id="filter-region" class="form-control" onchange="filterCars()">
-                <option value="">Все регионы</option>
-                <option value="Киев">Киев</option>
-                <option value="Харьков">Харьков</option>
-                <option value="Одесса">Одесса</option>
-                <option value="Днепр">Днепр</option>
-                <option value="Львов">Львов</option>
-            </select>
-        </div>
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- Sidebar Filters -->
+        <aside class="lg:col-span-1 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
+                    <h2 class="text-lg font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-filter text-orange-500"></i>
+                        <span>Поиск авто</span>
+                    </h2>
+                    <button onclick="resetFilters()" class="text-xs text-slate-400 hover:text-orange-400 transition underline">Сбросить</button>
+                </div>
 
-        <div id="cars-grid" class="cars-grid"></div>
-    </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Поиск по ключевым словам</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-500 text-sm"></i>
+                            <input type="text" id="filter-search" oninput="filterCars()" placeholder="Например, Camry, электро..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                        </div>
+                    </div>
 
-    <!-- Модальное окно -->
-    <div id="add-modal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeAddModal()">&times;</button>
-            <div class="modal-title">Подать объявление</div>
-            <form id="add-car-form" onsubmit="handleAddCar(event)">
-                <div class="form-group">
-                    <label>Марка автомобиля</label>
-                    <select id="add-brand" class="form-control" required onchange="updateModelsList()">
-                        <option value="">Выберите марку</option>
-                        <option value="BMW">BMW</option>
-                        <option value="Audi">Audi</option>
-                        <option value="Mercedes-Benz">Mercedes-Benz</option>
-                        <option value="Volkswagen">Volkswagen</option>
-                        <option value="Toyota">Toyota</option>
-                        <option value="Skoda">Skoda</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Модель</label>
-                    <select id="add-model" class="form-control" required>
-                        <option value="">Сначала выберите марку</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Цена ($)</label>
-                    <input type="number" id="add-price" class="form-control" required placeholder="Например: 15000">
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div class="form-group">
-                        <label>Год выпуска</label>
-                        <input type="number" id="add-year" class="form-control" required placeholder="2018">
-                    </div>
-                    <div class="form-group">
-                        <label>Пробег (тыс. км)</label>
-                        <input type="number" id="add-mileage" class="form-control" required placeholder="50">
-                    </div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
-                    <div class="form-group">
-                        <label>Объем двигателя (л)</label>
-                        <input type="text" id="add-engine" class="form-control" required placeholder="Например: 2.0">
-                    </div>
-                    <div class="form-group">
-                        <label>КПП</label>
-                        <select id="add-transmission" class="form-control">
-                            <option value="Автомат">Автомат</option>
-                            <option value="Механика">Механика</option>
-                            <option value="Робот">Робот</option>
-                            <option value="Типтроник">Типтроник</option>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Марка</label>
+                        <select id="filter-brand" onchange="onFilterBrandChange()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                            <option value="">Все марки</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Топливо</label>
-                        <select id="add-fuel" class="form-control">
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Модель</label>
+                        <select id="filter-model" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                            <option value="">Все модели</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Объем двигателя</label>
+                        <select id="filter-engine" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                            <option value="">Любой объем</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Коробка передач</label>
+                        <select id="filter-transmission" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                            <option value="">Любая коробка</option>
+                            <option value="Механика">Механика</option>
+                            <option value="Автомат">Автомат</option>
+                            <option value="Робот">Робот</option>
+                            <option value="Вариатор">Вариатор</option>
+                            <option value="Типтроник">Типтроник</option>
+                            <option value="DSG">DSG</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Регион</label>
+                        <select id="filter-region" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                            <option value="">Вся Украина</option>
+                            <option value="Киев">Киев</option>
+                            <option value="Харьков">Харьков</option>
+                            <option value="Одесса">Одесса</option>
+                            <option value="Днепр">Днепр</option>
+                            <option value="Львов">Львов</option>
+                            <option value="Запорожье">Запорожье</option>
+                            <option value="Винница">Винница</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Цена до ($)</label>
+                        <input type="range" id="filter-price" min="5000" max="150000" step="5000" value="150000" oninput="filterCars(); updatePriceLabel();" class="w-full accent-orange-500 bg-slate-800 cursor-pointer">
+                        <div class="flex justify-between text-xs text-slate-400 mt-1">
+                            <span>$5,000</span>
+                            <span id="price-label" class="text-orange-400 font-bold">$150,000+</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Тип топлива</label>
+                        <select id="filter-fuel" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                            <option value="">Любое</option>
                             <option value="Бензин">Бензин</option>
                             <option value="Дизель">Дизель</option>
+                            <option value="Газ">Газ</option>
                             <option value="Газ / Бензин">Газ / Бензин</option>
                             <option value="Электро">Электро</option>
                             <option value="Гибрид">Гибрид</option>
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Регион</label>
-                    <select id="add-region" class="form-control">
+            </div>
+        </aside>
+
+        <!-- Listings Section -->
+        <section class="lg:col-span-3 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p class="text-sm text-slate-400"><span id="cars-count" class="text-white font-bold">0</span> объявлений найдено</p>
+                <div class="flex items-center space-x-3 w-full sm:w-auto">
+                    <span class="text-xs text-slate-400 uppercase font-semibold whitespace-nowrap">Сортировка:</span>
+                    <select id="sort-order" onchange="filterCars()" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-500 text-white w-full sm:w-auto">
+                        <option value="newest">Сначала новые</option>
+                        <option value="price-asc">Сначала дешевле</option>
+                        <option value="price-desc">Сначала дороже</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="cars-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Dynamic Content -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Car Details Modal -->
+    <div id="car-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl relative my-8 animate-in fade-in zoom-in duration-200">
+            <button onclick="closeCarModal()" class="absolute top-4 right-4 bg-slate-800 hover:bg-slate-700 text-slate-300 w-10 h-10 rounded-full flex items-center justify-center transition z-10">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="modal-content">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Car Modal -->
+    <div id="add-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div id="add-modal-container" class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-5 sm:p-8 shadow-2xl relative my-8 max-h-[85vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+                <h3 class="text-xl font-bold flex items-center space-x-2">
+                    <i class="fa-solid fa-circle-plus text-orange-500"></i>
+                    <span>Добавить объявление</span>
+                </h3>
+                <button onclick="closeAddModal()" class="text-slate-400 hover:text-white transition p-2">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <form id="add-car-form" onsubmit="handleAddCar(event)" class="space-y-4">
+                <!-- Марка и Модель сверху -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Марка</label>
+                        <select id="add-brand" onchange="updateModelsList('add')" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                            <option value="">Выберите марку</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Модель</label>
+                        <select id="add-model" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                            <option value="">Сначала выберите марку</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Цена ($)</label>
+                        <input type="number" id="add-price" required placeholder="35000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Год</label>
+                        <input type="number" id="add-year" required placeholder="2021" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Пробег (тыс. км)</label>
+                        <input type="number" id="add-mileage" required placeholder="45" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Объем двигателя (л)</label>
+                        <select id="add-engine" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                            <option value="">Выберите объем</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Коробка передач</label>
+                        <select id="add-transmission" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                            <option value="">Выберите коробку</option>
+                            <option value="Механика">Механика</option>
+                            <option value="Автомат">Автомат</option>
+                            <option value="Робот">Робот</option>
+                            <option value="Вариатор">Вариатор</option>
+                            <option value="Типтроник">Типтроник</option>
+                            <option value="DSG">DSG</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Топливо</label>
+                        <select id="add-fuel" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                            <option value="Бензин">Бензин</option>
+                            <option value="Дизель">Дизель</option>
+                            <option value="Газ">Газ</option>
+                            <option value="Газ / Бензин">Газ / Бензин</option>
+                            <option value="Электро">Электро</option>
+                            <option value="Гибрид">Гибрид</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Регион</label>
+                    <select id="add-region" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
                         <option value="Киев">Киев</option>
                         <option value="Харьков">Харьков</option>
                         <option value="Одесса">Одесса</option>
                         <option value="Днепр">Днепр</option>
                         <option value="Львов">Львов</option>
+                        <option value="Запорожье">Запорожье</option>
+                        <option value="Винница">Винница</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Фотографии</label>
-                    <input type="file" id="add-photos-input" class="form-control" accept="image/*" multiple onchange="handleImageSelection(event)">
-                    <div id="file-name-display" style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Нажмите для выбора фото</div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Фотографии автомобиля (до 8 шт.)</label>
+                    <label for="add-photo-file" class="mt-1 flex flex-col items-center justify-center px-6 pt-5 pb-6 border-2 border-slate-800 border-dashed rounded-xl bg-slate-950 hover:border-orange-500 transition cursor-pointer">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-orange-500 mb-2"></i>
+                        <span class="text-sm text-slate-300 text-center" id="file-name-display">Нажмите для выбора нескольких фото (до 8)</span>
+                        <span class="text-xs text-slate-500 mt-1">Автоматическое сжатие для быстрой загрузки</span>
+                        <input type="file" id="add-photo-file" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
+                    </label>
                 </div>
-                <div class="form-group">
-                    <label>Номер телефона (для связи)</label>
-                    <input type="text" id="add-phone" class="form-control" required value="+380">
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Ваш номер телефона (для входа в кабинет)</label>
+                    <input type="tel" id="add-phone" required value="+380" placeholder="+380XXXXXXXXX" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
                 </div>
-                <div class="form-group">
-                    <label>Описание</label>
-                    <textarea id="add-desc" class="form-control" rows="3" placeholder="Состояние автомобиля..."></textarea>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Описание</label>
+                        <!-- Кнопка генерации AI -->
+                        <button type="button" onclick="generateAiDescription()" class="text-xs text-orange-400 hover:text-orange-300 font-semibold flex items-center space-x-1.5 transition bg-orange-500/10 hover:bg-orange-500/20 px-2.5 py-1 rounded-lg border border-orange-500/20">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>Сгенерировать с AI</span>
+                        </button>
+                    </div>
+                    <textarea id="add-desc" rows="3" placeholder="Состояние автомобиля, комплектация..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500"></textarea>
                 </div>
-                <button type="submit" class="btn" style="width: 100%; justify-content: center; padding: 12px;">Опубликовать объявление</button>
+
+                <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-orange-600/30">
+                    Опубликовать объявление
+                </button>
             </form>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 ATM-Авто. Все права защищены.</p>
+    <!-- Personal Cabinet Modal -->
+    <div id="cabinet-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+                <h3 class="text-xl font-bold flex items-center space-x-2">
+                    <i class="fa-solid fa-user-gear text-orange-500"></i>
+                    <span>Личный кабинет (<span id="cabinet-phone-title" class="text-orange-400"></span>)</span>
+                </h3>
+                <button onclick="closeCabinetModal()" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="mb-4 flex items-center justify-between">
+                <span class="text-sm text-slate-400">Ваши активные объявления:</span>
+                <button onclick="logoutUser()" class="text-xs text-red-400 hover:underline"><i class="fa-solid fa-right-from-bracket mr-1"></i> Выйти из аккаунта</button>
+            </div>
+            <div id="cabinet-cars-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                <!-- Заполняется динамически -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal (Вход по телефону) -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative my-8">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+                <h3 class="text-xl font-bold flex items-center space-x-2">
+                    <i class="fa-solid fa-right-to-bracket text-orange-500"></i>
+                    <span>Вход в личный кабинет</span>
+                </h3>
+                <button onclick="closeAuthModal()" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Номер телефона</label>
+                    <input type="tel" id="login-phone" required value="+380" placeholder="+380XXXXXXXXX" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                </div>
+                <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-orange-600/30">
+                    Войти в кабинет
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Favorites Drawer / Modal -->
+    <div id="favorites-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+                <h3 class="text-xl font-bold flex items-center space-x-2">
+                    <i class="fa-solid fa-heart text-orange-500"></i>
+                    <span>Избранные автомобили</span>
+                </h3>
+                <button onclick="closeFavoritesModal()" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div id="favorites-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-slate-500">
+            &copy; 2026 АТМ-Авто. Все права защищены. Ведущий украинский автобазар.
+        </div>
     </footer>
 
+    <!-- JavaScript Application Logic -->
     <script>
-        const SUPABASE_URL = 'https://eyvewlhxsczunmrdfcjs.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5dmV3bGh4c2N6dW5tcmRmY2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1MTU2NTMsImV4cCI6MjEwNjA5MTY1M30._gAqkRGaeyPjaigFJG4vBaSri7pSam5aw8uLrrjN0Vg'.trim();
+        const carModelsData = {
+            'Audi': ['80', '100', 'A1', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'Q2', 'Q3', 'Q5', 'Q7', 'Q8', 'R8', 'RS6', 'TT', 'e-tron'],
+            'BMW': ['1 Series', '3 Series', '5 Series', '7 Series', 'i4', 'iX', 'M3', 'M5', 'X1', 'X3', 'X5', 'X6', 'X7', 'Z4'],
+            'BYD': ['Atto 3', 'Han', 'Qin', 'Seal', 'Song Plus', 'Tang', 'Yuan Plus'],
+            'Cadillac': ['ATS', 'CT5', 'Escalade', 'SRX', 'XT4', 'XT5', 'XT6'],
+            'Chery': ['Arrizo 8', 'Tiggo 2', 'Tiggo 4', 'Tiggo 7 Pro', 'Tiggo 8 Pro'],
+            'Chevrolet': ['Aveo', 'Camaro', 'Captura', 'Corvette', 'Cruze', 'Epica', 'Equinox', 'Malibu', 'Niva', 'Tahoe', 'Volt'],
+            'Chrysler': ['300C', 'Grand Voyager', 'Pacifica', 'PT Cruiser'],
+            'Citroen': ['Berlingo', 'C-Elysee', 'C3', 'C4', 'C5 Aircross', 'Jumper'],
+            'Dodge': ['Caliber', 'Challenger', 'Charger', 'Durango', 'Journey', 'RAM'],
+            'Exeed': ['LX', 'TXL', 'VX'],
+            'Ford': ['EcoSport', 'Edge', 'Escape', 'Explorer', 'Fiesta', 'Focus', 'Fusion', 'Kuga', 'Mondeo', 'Mustang', 'Mustang Mach-E', 'Ranger'],
+            'Geely': ['Atlas', 'Coolray', 'Emgrand', 'Monjaro', 'Tugella'],
+            'GWM / Haval': ['Dargo', 'H2', 'H6', 'Jolion'],
+            'Honda': ['Accord', 'Civic', 'CR-V', 'HR-V', 'Jazz', 'Pilot'],
+            'Hyundai': ['Accent', 'Elantra', 'Ioniq 5', 'Kona', 'Palisade', 'Santa Fe', 'Sonata', 'Tucson'],
+            'Infiniti': ['EX', 'FX35', 'FX45', 'G25', 'G35', 'M35', 'Q50', 'Q70', 'QX50', 'QX60', 'QX80'],
+            'Jeep': ['Cherokee', 'Compass', 'Grand Cherokee', 'Renegade', 'Wrangler'],
+            'Kia': ['Ceed', 'Cerato', 'EV6', 'K5', 'Niro', 'Optima', 'Picanto', 'Rio', 'Sorento', 'Soul', 'Sportage', 'Stinger'],
+            'Land Rover': ['Defender', 'Discovery', 'Freelander', 'Range Rover', 'Range Rover Evoque', 'Range Rover Sport'],
+            'Lexus': ['ES 250', 'ES 350', 'GS 300', 'GX 460', 'IS 250', 'LS 500', 'LX 470', 'LX 570', 'LX 600', 'NX 200', 'NX 350', 'RX 350', 'RX 450h'],
+            'Mazda': ['2', '3', '6', 'CX-30', 'CX-5', 'CX-9', 'MX-5'],
+            'Mercedes-Benz': ['A-Class', 'C-Class', 'CLA', 'CLS', 'E-Class', 'G-Class', 'GLA', 'GLB', 'GLC', 'GLE', 'GLS', 'S-Class', 'V-Class'],
+            'Mitsubishi': ['ASX', 'Colt', 'Galant', 'L200', 'Lancer', 'Outlander', 'Pajero', 'Pajero Sport'],
+            'Nissan': ['Almera', 'Juke', 'Leaf', 'Maxima', 'Murano', 'Navara', 'Note', 'Pathfinder', 'Patrol', 'Qashqai', 'Rogue', 'Sentra', 'X-Trail'],
+            'Opel': ['Astra', 'Corsa', 'Frontera', 'Insignia', 'Mokka', 'Omega', 'Vectra', 'Zafira'],
+            'Peugeot': ['2008', '208', '3008', '308', '408', '5008', 'Partner'],
+            'Porsche': ['Cayenne', 'Macan', 'Panamera', 'Taycan', '911'],
+            'Renault': ['Captur', 'Clio', 'Duster', 'Fluence', 'Kadjar', 'Kandgo', 'Koleos', 'Logan', 'Megane', 'Sandero', 'Scenic', 'Symbol', 'Zoe'],
+            'Skoda': ['Fabia', 'Kamiq', 'Karoq', 'Kodiaq', 'Octavia', 'Rapid', 'Superb', 'Yeti'],
+            'Subaru': ['Forester', 'Impreza', 'Legacy', 'Outback', 'Tribeca', 'XV'],
+            'Suzuki': ['Grand Vitara', 'Ignis', 'Jimny', 'Swift', 'SX4', 'Vitara'],
+            'Tesla': ['Model 3', 'Model S', 'Model X', 'Model Y', 'Cybertruck'],
+            'Toyota': ['Auris', 'Avalon', 'Avensis', 'C-HR', 'Camry', 'Corolla', 'FJ Cruiser', 'Highlander', 'Hilux', 'Land Cruiser 100', 'Land Cruiser 200', 'Land Cruiser 300', 'Land Cruiser Prado', 'Prius', 'RAV4', 'Sequoia', 'Sienna', 'Supra', 'Tundra', 'Venza', 'Yaris'],
+            'Volkswagen': ['Arteon', 'Beetle', 'Caddy', 'Golf', 'ID.4', 'ID.6', 'Jetta', 'Multivan', 'Passat', 'Polo', 'T-Roc', 'Tiguan', 'Touareg', 'Touran', 'Transporter'],
+            'Volvo': ['C30', 'S40', 'S60', 'S90', 'V40', 'V60', 'XC40', 'XC60', 'XC90'],
+            'Zeekr': ['001', '009', 'X']
+        };
 
-        let allCars = [];
+        const engineVolumes = [
+            '0.6', '0.7', '0.8', '0.9', 
+            '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', 
+            '2.0', '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', '2.7', '2.8', '2.9', 
+            '3.0', '3.2', '3.5', '3.6', '3.8', '4.0', '4.2', '4.4', '4.8', '5.0+', 
+            'Электро'
+        ];
+
+        const defaultCars = [
+            { id: 1, brand: 'BMW', model: 'X5', price: 48900, year: 2020, mileage: 62, engine: '3.0', transmission: 'Автомат', fuel: 'Дизель', region: 'Киев', images: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80'], phone: '+380675553535', desc: 'Идеальное состояние, официальная машина, полная комплектация.' },
+            { id: 2, brand: 'Audi', model: 'A6', price: 32000, year: 2019, mileage: 84, engine: '2.0', transmission: 'DSG', fuel: 'Бензин', region: 'Харьков', images: ['https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80'], phone: '+380501112233', desc: 'Машина вложений не требует. Первый владелец.' },
+            { id: 3, brand: 'Tesla', model: 'Model Y', price: 39500, year: 2022, mileage: 25, engine: 'Электро', transmission: 'Автомат', fuel: 'Электро', region: 'Киев', images: ['https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80'], phone: '+380639991122', desc: 'Состояние нового электромобиля. Автопилот, батарея в идеале.' },
+            { id: 4, brand: 'Volkswagen', model: 'Passat', price: 18500, year: 2017, mileage: 145, engine: '1.8', transmission: 'Механика', fuel: 'Газ / Бензин', region: 'Львов', images: ['https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80'], phone: '+380684445566', desc: 'Установлено качественное итальянское ГБО, расход радует.' }
+        ];
+
+        let cars = JSON.parse(localStorage.getItem('atm_cars')) || defaultCars;
+        let favorites = JSON.parse(localStorage.getItem('atm_favorites')) || [];
         let currentUserPhone = localStorage.getItem('atm_current_user') || '';
         let temporaryUploadedImages = ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
 
-        const carModelsData = {
-            "BMW": ["3 Series", "5 Series", "X5", "X3", "M4"],
-            "Audi": ["A4", "A6", "Q7", "Q5", "TT"],
-            "Mercedes-Benz": ["C-Class", "E-Class", "S-Class", "GLE", "GLK"],
-            "Volkswagen": ["Golf", "Passat", "Tiguan", "Polo"],
-            "Toyota": ["Camry", "RAV4", "Land Cruiser", "Corolla"],
-            "Skoda": ["Octavia", "Superb", "Kodiaq", "Fabia"]
-        };
+        document.addEventListener('DOMContentLoaded', () => {
+            initSelects();
+            updateUserCabinetUI();
+            filterCars();
+        });
 
-        function updateModelsList() {
-            const brand = document.getElementById('add-brand').value;
-            const modelSelect = document.getElementById('add-model');
-            modelSelect.innerHTML = '<option value="">Выберите модель</option>';
-            if (carModelsData[brand]) {
-                carModelsData[brand].forEach(model => {
-                    modelSelect.innerHTML += `<option value="${model}">${model}</option>`;
-                });
+        function saveCarsToStorage() {
+            try {
+                localStorage.setItem('atm_cars', JSON.stringify(cars));
+            } catch (e) {
+                alert('Память устройства заполнена. Попробуйте выбрать меньше фотографий или изображения меньшего размера.');
             }
         }
 
-        function openAddModal() {
-            document.getElementById('add-modal').style.display = 'flex';
-            if(currentUserPhone) document.getElementById('add-phone').value = currentUserPhone;
+        function saveFavoritesToStorage() {
+            localStorage.setItem('atm_favorites', JSON.stringify(favorites));
         }
 
-        function closeAddModal() {
-            document.getElementById('add-modal').style.display = 'none';
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.className = 'fa-solid fa-bars text-lg';
+            } else {
+                icon.className = 'fa-solid fa-xmark text-lg';
+            }
         }
 
-        function handleImageSelection(event) {
-            const files = event.target.files;
-            if (files.length > 0) {
-                document.getElementById('file-name-display').innerText = `Выбрано файлов: ${files.length}`;
-                temporaryUploadedImages = [];
-                for (let i = 0; i < Math.min(files.length, 8); i++) {
-                    temporaryUploadedImages.push(URL.createObjectURL(files[i]));
+        function closeMobileMenu() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+            document.getElementById('mobile-menu-icon').className = 'fa-solid fa-bars text-lg';
+        }
+
+        function updateUserCabinetUI() {
+            const container = document.getElementById('user-cabinet-container');
+            const mobileContainer = document.getElementById('mobile-user-cabinet');
+
+            if (currentUserPhone) {
+                const html = `
+                    <button onclick="openCabinetModal()" class="bg-slate-800 hover:bg-slate-700 text-orange-400 px-4 py-2.5 rounded-xl font-bold transition flex items-center space-x-2 border border-slate-700">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>Кабинет (${currentUserPhone})</span>
+                    </button>
+                `;
+                container.innerHTML = html;
+                mobileContainer.innerHTML = html;
+                document.getElementById('add-phone').value = currentUserPhone;
+            } else {
+                const html = `
+                    <button onclick="openAuthModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 border border-slate-700">
+                        <i class="fa-solid fa-right-to-bracket text-orange-500"></i>
+                        <span>Войти</span>
+                    </button>
+                `;
+                container.innerHTML = html;
+                mobileContainer.innerHTML = html;
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const phone = document.getElementById('login-phone').value.trim();
+            if (phone.length < 10) {
+                alert('Введите корректный номер телефона!');
+                return;
+            }
+            currentUserPhone = phone;
+            localStorage.setItem('atm_current_user', currentUserPhone);
+            closeAuthModal();
+            updateUserCabinetUI();
+            alert('Вы успешно вошли в личный кабинет!');
+        }
+
+        function logoutUser() {
+            currentUserPhone = '';
+            localStorage.removeItem('atm_current_user');
+            closeCabinetModal();
+            updateUserCabinetUI();
+            filterCars();
+            alert('Вы вышли из аккаунта.');
+        }
+
+        function openAuthModal() {
+            document.getElementById('auth-modal').classList.remove('hidden');
+            document.getElementById('auth-modal').classList.add('flex');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.remove('flex');
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function openCabinetModal() {
+            if (!currentUserPhone) {
+                openAuthModal();
+                return;
+            }
+            document.getElementById('cabinet-phone-title').innerText = currentUserPhone;
+            renderCabinetCars();
+            document.getElementById('cabinet-modal').classList.remove('hidden');
+            document.getElementById('cabinet-modal').classList.add('flex');
+        }
+
+        function closeCabinetModal() {
+            document.getElementById('cabinet-modal').classList.remove('flex');
+            document.getElementById('cabinet-modal').classList.add('hidden');
+        }
+
+        function renderCabinetCars() {
+            const listContainer = document.getElementById('cabinet-cars-list');
+            const myCars = cars.filter(c => c.phone === currentUserPhone);
+
+            if (myCars.length === 0) {
+                listContainer.innerHTML = `<p class="text-center text-slate-500 py-6 text-sm">У вас пока нет активных объявлений.</p>`;
+                return;
+            }
+
+            listContainer.innerHTML = myCars.map(car => {
+                const mainImg = (car.images && car.images.length > 0) ? car.images[0] : 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80';
+                return `
+                    <div class="flex items-center justify-between bg-slate-950 p-3 rounded-2xl border border-slate-800">
+                        <div class="flex items-center space-x-3 cursor-pointer" onclick="closeCabinetModal(); openCarModal(${car.id})">
+                            <img src="${mainImg}" class="w-16 h-14 object-cover rounded-xl">
+                            <div>
+                                <h4 class="font-bold text-white text-sm">${car.brand} ${car.model} (${car.year})</h4>
+                                <span class="text-xs text-orange-400 font-bold">$${car.price.toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <button onclick="deleteMyCar(${car.id})" class="bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white px-3 py-2 rounded-xl transition text-xs font-bold border border-red-500/30">
+                            <i class="fa-solid fa-trash-can mr-1"></i> Удалить
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function deleteMyCar(id) {
+            if (confirm('Вы действительно хотите удалить это объявление?')) {
+                cars = cars.filter(c => c.id !== id);
+                saveCarsToStorage();
+                filterCars();
+                renderCabinetCars();
+            }
+        }
+
+        function initSelects() {
+            const brands = Object.keys(carModelsData).sort();
+            
+            const filterBrandSelect = document.getElementById('filter-brand');
+            filterBrandSelect.innerHTML = '<option value="">Все марки</option>' + 
+                brands.map(b => `<option value="${b}">${b}</option>`).join('');
+
+            const addBrandSelect = document.getElementById('add-brand');
+            addBrandSelect.innerHTML = '<option value="">Выберите марку</option>' + 
+                brands.map(b => `<option value="${b}">${b}</option>`).join('');
+
+            const filterEngineSelect = document.getElementById('filter-engine');
+            filterEngineSelect.innerHTML = '<option value="">Любой объем</option>' + 
+                engineVolumes.map(vol => `<option value="${vol}">${vol === 'Электро' ? 'Электро' : vol + ' л'}</option>`).join('');
+
+            const addEngineSelect = document.getElementById('add-engine');
+            addEngineSelect.innerHTML = '<option value="">Выберите объем</option>' + 
+                engineVolumes.map(vol => `<option value="${vol}">${vol === 'Электро' ? 'Электро' : vol + ' л'}</option>`).join('');
+        }
+
+        function updateModelsList(type) {
+            if (type === 'filter') {
+                const brand = document.getElementById('filter-brand').value;
+                const modelSelect = document.getElementById('filter-model');
+                
+                modelSelect.innerHTML = '<option value="">Все модели</option>';
+                if (brand && carModelsData[brand]) {
+                    modelSelect.innerHTML += carModelsData[brand].map(m => `<option value="${m}">${m}</option>`).join('');
+                }
+                filterCars();
+            } else if (type === 'add') {
+                const brand = document.getElementById('add-brand').value;
+                const modelSelect = document.getElementById('add-model');
+                
+                modelSelect.innerHTML = '<option value="">Выберите модель</option>';
+                if (brand && carModelsData[brand]) {
+                    modelSelect.innerHTML += carModelsData[brand].map(m => `<option value="${m}">${m}</option>`).join('');
                 }
             }
         }
 
-        function updateUserCabinetUI() {
-            const info = document.getElementById('user-cabinet-info');
-            if (currentUserPhone) info.innerText = `Кабинет: ${currentUserPhone}`;
+        function onFilterBrandChange() {
+            updateModelsList('filter');
         }
 
-        async function loadCarsFromSupabase() {
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/cars?select=*&order=created_at.desc`, {
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`
-                    }
-                });
-                if (!response.ok) throw new Error('Ошибка загрузки');
-                allCars = await response.json();
-                renderCars(allCars);
-            } catch (err) {
-                console.error('Не удалось загрузить из облака:', err);
+        function updatePriceLabel() {
+            const val = document.getElementById('filter-price').value;
+            document.getElementById('price-label').innerText = '$' + Number(val).toLocaleString();
+        }
+
+        function filterCars() {
+            const searchTxt = document.getElementById('filter-search').value.toLowerCase();
+            const brandVal = document.getElementById('filter-brand').value;
+            const modelVal = document.getElementById('filter-model').value;
+            const engineVal = document.getElementById('filter-engine').value;
+            const transmissionVal = document.getElementById('filter-transmission').value;
+            const regionVal = document.getElementById('filter-region').value;
+            const priceVal = Number(document.getElementById('filter-price').value);
+            const fuelVal = document.getElementById('filter-fuel').value;
+            const sortVal = document.getElementById('sort-order').value;
+
+            let filtered = cars.filter(car => {
+                const fullText = `${car.brand} ${car.model} ${car.fuel} ${car.engine} ${car.transmission} ${car.desc}`.toLowerCase();
+                if (searchTxt && !fullText.includes(searchTxt)) return false;
+                if (brandVal && car.brand !== brandVal) return false;
+                if (modelVal && car.model !== modelVal) return false;
+                if (engineVal && car.engine !== engineVal) return false;
+                if (transmissionVal && car.transmission !== transmissionVal) return false;
+                if (regionVal && car.region !== regionVal) return false;
+                if (car.price > priceVal) return false;
+                if (fuelVal && car.fuel !== fuelVal) return false;
+                return true;
+            });
+
+            if (sortVal === 'newest') {
+                filtered.sort((a, b) => b.year - a.year);
+            } else if (sortVal === 'price-asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sortVal === 'price-desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            }
+
+            renderCars(filtered);
+        }
+
+        function renderCars(list) {
+            const grid = document.getElementById('cars-grid');
+            document.getElementById('cars-count').innerText = list.length;
+
+            if (list.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center text-slate-500">
+                        <i class="fa-solid fa-car-burst text-4xl mb-3 text-slate-600"></i>
+                        <p class="text-base font-semibold">По вашему запросу ничего не найдено</p>
+                        <p class="text-xs mt-1">Попробуйте изменить параметры фильтрации</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = list.map(car => {
+                const isFav = favorites.includes(car.id);
+                const mainImg = (car.images && car.images.length > 0) ? car.images[0] : 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80';
+                return `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition flex flex-col group shadow-lg">
+                        <div class="relative h-48 overflow-hidden cursor-pointer" onclick="openCarModal(${car.id})">
+                            <img src="${mainImg}" alt="${car.brand} ${car.model}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <button onclick="event.stopPropagation(); toggleFavorite(${car.id})" class="absolute top-3 right-3 bg-slate-950/70 backdrop-blur-md hover:bg-slate-950 text-white w-9 h-9 rounded-xl flex items-center justify-center transition border border-slate-700">
+                                <i class="fa-solid fa-heart ${isFav ? 'text-orange-500' : 'text-slate-400'}"></i>
+                            </button>
+                            <span class="absolute bottom-3 left-3 bg-slate-950/80 backdrop-blur-md text-orange-400 text-xs px-3 py-1.5 rounded-lg font-bold border border-slate-800">
+                                ${car.region}
+                            </span>
+                        </div>
+                        <div class="p-5 flex flex-col flex-grow">
+                            <div class="flex items-start justify-between mb-2">
+                                <h3 class="text-lg font-bold text-white cursor-pointer hover:text-orange-400 transition" onclick="openCarModal(${car.id})">${car.brand} ${car.model}</h3>
+                                <span class="text-xl font-extrabold text-orange-500">$${car.price.toLocaleString()}</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 py-3 my-2 border-y border-slate-800/80 text-xs text-slate-400">
+                                <div><i class="fa-solid fa-calendar text-orange-500 mr-1"></i> ${car.year} г.</div>
+                                <div><i class="fa-solid fa-road text-orange-500 mr-1"></i> ${car.mileage} тыс. км</div>
+                                <div><i class="fa-solid fa-gauge-high text-orange-500 mr-1"></i> ${car.engine === 'Электро' ? 'Электро' : car.engine + ' л'}</div>
+                                <div><i class="fa-solid fa-gears text-orange-500 mr-1"></i> ${car.transmission}</div>
+                            </div>
+                            <p class="text-xs text-slate-400 line-clamp-2 mb-4 flex-grow">${car.desc}</p>
+                            <button onclick="openCarModal(${car.id})" class="w-full bg-slate-800 hover:bg-orange-600 hover:text-white text-slate-200 text-sm font-bold py-2.5 rounded-xl transition border border-slate-700 hover:border-orange-600">
+                                Подробнее (${car.images ? car.images.length : 1} фото)
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Автоматическое сжатие изображений
+        function handleImageUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            temporaryUploadedImages = [];
+            const limit = Math.min(files.length, 8);
+            document.getElementById('file-name-display').innerText = `Обработка фото (0/${limit})...`;
+
+            let processedCount = 0;
+
+            for (let i = 0; i < limit; i++) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        const maxWidth = 800;
+
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+                        temporaryUploadedImages.push(compressedDataUrl);
+
+                        processedCount++;
+                        document.getElementById('file-name-display').innerText = `Готово фото: ${processedCount} из ${limit}`;
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(files[i]);
             }
         }
 
-        async function handleAddCar(event) {
+        // Функция генерации описания через ИИ-шаблоны
+        function generateAiDescription() {
+            const brand = document.getElementById('add-brand').value || 'автомобиль';
+            const model = document.getElementById('add-model').value || '';
+            const year = document.getElementById('add-year').value || '';
+            const mileage = document.getElementById('add-mileage').value || '';
+            const transmission = document.getElementById('add-transmission').value || '';
+            const fuel = document.getElementById('add-fuel').value || 'Бензин';
+            const region = document.getElementById('add-region').value || 'Украина';
+
+            if (!document.getElementById('add-brand').value) {
+                alert('Пожалуйста, выберите марку автомобиля для генерации описания!');
+                return;
+            }
+
+            const intros = [
+                `Продается отличный и надежный ${brand} ${model}.`,
+                `Вашему вниманию предлагается ${brand} ${model} в хорошем состоянии.`,
+                `Срочно продам ${brand} ${model}. Автомобиль ухоженный, заслуживает внимания.`
+            ];
+
+            const conditions = [
+                "Машина полностью обслужена, вложений не требует, сел и поехал.",
+                "Технически полностью исправна, двигатель работает ровно, ходовая в норме.",
+                "Салон чистый и аккуратный, в автомобиле не курили. Все системы работают исправно."
+            ];
+
+            const closings = [
+                "Торг уместен у капота. Звоните в любое время!",
+                "Возможен небольшой торг реальному покупателю. Звоните, отвечу на все вопросы.",
+                "Продажа от владельца. Площадкам и автобизнесменам просьба не беспокоить."
+            ];
+
+            const randomIntro = intros[Math.floor(Math.random() * intros.length)];
+            const randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
+            const randomClosing = closings[Math.floor(Math.random() * closings.length)];
+
+            let text = `${randomIntro}\n\n`;
+            
+            let specs = [];
+            if (year) specs.push(`Год выпуска: ${year}`);
+            if (mileage) specs.push(`Пробег: ${mileage} тыс. км`);
+            if (transmission) specs.push(`Коробка передач: ${transmission}`);
+            if (fuel) specs.push(`Тип топлива: ${fuel}`);
+            specs.push(`Регион: ${region}`);
+
+            if (specs.length > 0) {
+                text += `Характеристики:\n• ${specs.join('\n• ')}\n\n`;
+            }
+
+            text += `${randomCondition}\n\n${randomClosing}`;
+
+            document.getElementById('add-desc').value = text;
+        }
+
+        function openCarModal(id) {
+            const car = cars.find(c => c.id === id);
+            if (!car) return;
+
+            const imagesList = (car.images && car.images.length > 0) ? car.images : [car.image || 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
+            
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="h-72 sm:h-96 relative">
+                    <img id="main-modal-img" src="${imagesList[0]}" alt="${car.brand} ${car.model}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent"></div>
+                    <span class="absolute bottom-4 left-6 bg-orange-600 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold">
+                        ${car.region}
+                    </span>
+                </div>
+                ${imagesList.length > 1 ? `
+                    <div class="flex items-center space-x-2 p-4 bg-slate-950 overflow-x-auto border-t border-slate-800">
+                        ${imagesList.map((img) => `
+                            <img src="${img}" onclick="document.getElementById('main-modal-img').src='${img}'" class="w-20 h-16 object-cover rounded-xl cursor-pointer hover:border-2 hover:border-orange-500 transition flex-shrink-0 border border-slate-800">
+                        `).join('')}
+                    </div>
+                ` : ''}
+
+                <div class="p-6 sm:p-8 space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">${car.brand} ${car.model}</h2>
+                            <p class="text-slate-400 text-sm mt-1">Украина, ${car.region}</p>
+                        </div>
+                        <span class="text-3xl font-extrabold text-orange-500">$${car.price.toLocaleString()}</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-950 p-4 rounded-2xl border border-slate-800 text-sm">
+                        <div>
+                            <span class="block text-xs text-slate-500 uppercase font-semibold">Год выпуска</span>
+                            <span class="font-bold text-white">${car.year}</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-slate-500 uppercase font-semibold">Пробег</span>
+                            <span class="font-bold text-white">${car.mileage} тыс. км</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-slate-500 uppercase font-semibold">Двигатель</span>
+                            <span class="font-bold text-white">${car.engine === 'Электро' ? 'Электро' : car.engine + ' л'}</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-slate-500 uppercase font-semibold">Коробка</span>
+                            <span class="font-bold text-white">${car.transmission}</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-950 p-4 rounded-2xl border border-slate-800 text-sm">
+                        <div>
+                            <span class="block text-xs text-slate-500 uppercase font-semibold">Топливо</span>
+                            <span class="font-bold text-white">${car.fuel}</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-slate-500 uppercase font-semibold">Регион</span>
+                            <span class="font-bold text-white">${car.region}</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Описание продавца</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed bg-slate-950 p-4 rounded-2xl border border-slate-800">${car.desc}</p>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-orange-600/25 text-orange-400 w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold border border-orange-500/30">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs text-slate-400">Телефон владельца</span>
+                                <span class="text-base font-bold text-white">${car.phone}</span>
+                            </div>
+                        </div>
+                        <a href="tel:${car.phone}" class="bg-orange-600 hover:bg-orange-500 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-orange-600/30">
+                            Позвонить
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('car-modal').classList.remove('hidden');
+            document.getElementById('car-modal').classList.add('flex');
+        }
+
+        function closeCarModal() {
+            document.getElementById('car-modal').classList.remove('flex');
+            document.getElementById('car-modal').classList.add('hidden');
+        }
+
+        function openAddModal() {
+            const modal = document.getElementById('add-modal');
+            const container = document.getElementById('add-modal-container');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            if (container) container.scrollTop = 0;
+        }
+
+        function closeAddModal() {
+            document.getElementById('add-modal').classList.remove('flex');
+            document.getElementById('add-modal').classList.add('hidden');
+        }
+
+        function handleAddCar(event) {
             event.preventDefault();
+            
             const phoneVal = document.getElementById('add-phone').value;
             if (!currentUserPhone) {
                 currentUserPhone = phoneVal;
@@ -251,7 +948,8 @@
                 updateUserCabinetUI();
             }
 
-            const newCarRecord = {
+            const newCar = {
+                id: Date.now(),
                 brand: document.getElementById('add-brand').value,
                 model: document.getElementById('add-model').value,
                 price: Number(document.getElementById('add-price').value),
@@ -263,91 +961,82 @@
                 region: document.getElementById('add-region').value,
                 images: [...temporaryUploadedImages],
                 phone: phoneVal,
-                description: document.getElementById('add-desc').value || 'Без описания.'
+                desc: document.getElementById('add-desc').value || 'Без описания.'
             };
 
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/cars`, {
-                    method: 'POST',
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=minimal'
-                    },
-                    body: JSON.stringify(newCarRecord)
-                });
-
-                if (!response.ok) {
-                    const errText = await response.text();
-                    throw new Error(`Ошибка сервера: ${response.status} - ${errText}`);
-                }
-
-                closeAddModal();
-                document.getElementById('add-car-form').reset();
-                document.getElementById('add-phone').value = currentUserPhone || '+380';
-                document.getElementById('file-name-display').innerText = 'Нажмите для выбора фото';
-                document.getElementById('add-model').innerHTML = '<option value="">Сначала выберите марку</option>';
-                temporaryUploadedImages = ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
-                
-                alert('Объявление успешно опубликовано!');
-                loadCarsFromSupabase();
-            } catch (err) {
-                console.error('Ошибка сохранения:', err);
-                alert('Не удалось сохранить объявление. Проверьте консоль (F12).');
-            }
+            cars.unshift(newCar);
+            saveCarsToStorage();
+            filterCars();
+            closeAddModal();
+            document.getElementById('add-car-form').reset();
+            document.getElementById('add-phone').value = currentUserPhone || '+380';
+            document.getElementById('file-name-display').innerText = 'Нажмите для выбора нескольких фото (до 8)';
+            document.getElementById('add-model').innerHTML = '<option value="">Сначала выберите марку</option>';
+            temporaryUploadedImages = ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
+            alert('Объявление успешно опубликовано и надежно сохранено!');
         }
 
-        function renderCars(cars) {
-            const grid = document.getElementById('cars-grid');
-            grid.innerHTML = '';
-            if (cars.length === 0) {
-                grid.innerHTML = '<div style="color: var(--text-muted); grid-column: 1/-1; text-align: center; padding: 40px;">Объявлений пока нет. Будьте первыми!</div>';
-                return;
+        function toggleFavorite(id) {
+            const index = favorites.indexOf(id);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(id);
             }
-            cars.forEach(car => {
-                let imgUrl = 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80';
-                if (car.images) {
-                    if (Array.isArray(car.images) && car.images.length > 0) imgUrl = car.images[0];
-                    else if (typeof car.images === 'string' && car.images.startsWith('[')) {
-                        try { const parsed = JSON.parse(car.images); if(parsed.length) imgUrl = parsed[0]; } catch(e){}
-                    }
-                }
-                grid.innerHTML += `
-                    <div class="car-card">
-                        <div class="car-img" style="background-image: url('${imgUrl}')"></div>
-                        <div class="car-info">
-                            <div class="car-price">$${Number(car.price).toLocaleString()}</div>
-                            <div class="car-title">${car.brand} ${car.model} (${car.year})</div>
-                            <div class="car-details">
-                                <span>${car.mileage} тыс. км</span> &bull; 
-                                <span>${car.engine} л</span> &bull; 
-                                <span>${car.transmission}</span> &bull; 
-                                <span>${car.region}</span>
+            saveFavoritesToStorage();
+            document.getElementById('favorites-badge').innerText = favorites.length;
+            document.getElementById('favorites-badge-mobile').innerText = favorites.length;
+            filterCars();
+        }
+
+        function openFavoritesModal() {
+            const listContainer = document.getElementById('favorites-list');
+            const favCars = cars.filter(c => favorites.includes(c.id));
+
+            if (favCars.length === 0) {
+                listContainer.innerHTML = `<p class="text-center text-slate-500 py-8 text-sm">Список избранного пуст</p>`;
+            } else {
+                listContainer.innerHTML = favCars.map(car => {
+                    const mainImg = (car.images && car.images.length > 0) ? car.images[0] : 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80';
+                    return `
+                        <div class="flex items-center justify-between bg-slate-950 p-3 rounded-2xl border border-slate-800">
+                            <div class="flex items-center space-x-3 cursor-pointer" onclick="closeFavoritesModal(); openCarModal(${car.id})">
+                                <img src="${mainImg}" class="w-16 h-14 object-cover rounded-xl">
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">${car.brand} ${car.model}</h4>
+                                    <span class="text-xs text-orange-400 font-bold">$${car.price.toLocaleString()}</span>
+                                </div>
                             </div>
-                            <div style="font-size: 13px; color: var(--accent); margin-top: auto; padding-top: 10px; font-weight: bold;">📞 ${car.phone}</div>
+                            <button onclick="toggleFavorite(${car.id})" class="text-slate-400 hover:text-red-400 p-2 transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
                         </div>
-                    </div>
-                `;
-            });
+                    `;
+                }).join('');
+            }
+
+            document.getElementById('favorites-modal').classList.remove('hidden');
+            document.getElementById('favorites-modal').classList.add('flex');
         }
 
-        function filterCars() {
-            const brand = document.getElementById('filter-brand').value.toLowerCase();
-            const search = document.getElementById('filter-search').value.toLowerCase();
-            const region = document.getElementById('filter-region').value.toLowerCase();
-
-            const filtered = allCars.filter(car => {
-                const matchBrand = !brand || (car.brand && car.brand.toLowerCase().includes(brand));
-                const matchSearch = !search || (car.model && car.model.toLowerCase().includes(search)) || (car.description && car.description.toLowerCase().includes(search));
-                const matchRegion = !region || (car.region && car.region.toLowerCase().includes(region));
-                return matchBrand && matchSearch && matchRegion;
-            });
-            renderCars(filtered);
+        function closeFavoritesModal() {
+            document.getElementById('favorites-modal').classList.remove('flex');
+            document.getElementById('favorites-modal').classList.add('hidden');
         }
 
-        updateUserCabinetUI();
-        loadCarsFromSupabase();
+        function resetFilters() {
+            document.getElementById('filter-search').value = '';
+            document.getElementById('filter-brand').value = '';
+            document.getElementById('filter-model').innerHTML = '<option value="">Все модели</option>';
+            document.getElementById('filter-engine').value = '';
+            document.getElementById('filter-transmission').value = '';
+            document.getElementById('filter-region').value = '';
+            document.getElementById('filter-price').value = 150000;
+            document.getElementById('filter-fuel').value = '';
+            document.getElementById('sort-order').value = 'newest';
+            updatePriceLabel();
+            filterCars();
+        }
     </script>
 </body>
 </html>
