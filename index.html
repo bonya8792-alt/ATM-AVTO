@@ -106,7 +106,6 @@
                         </select>
                     </div>
 
-                    <!-- Фильтр по коробке передач -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Коробка передач</label>
                         <select id="filter-transmission" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
@@ -284,13 +283,14 @@
                     </select>
                 </div>
 
+                <!-- Поддержка загрузки нескольких фото (до 8 штук) -->
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Фотография автомобиля</label>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Фотографии автомобиля (до 8 шт.)</label>
                     <label for="add-photo-file" class="mt-1 flex flex-col items-center justify-center px-6 pt-5 pb-6 border-2 border-slate-800 border-dashed rounded-xl bg-slate-950 hover:border-orange-500 transition cursor-pointer">
                         <i class="fa-solid fa-cloud-arrow-up text-3xl text-orange-500 mb-2"></i>
-                        <span class="text-sm text-slate-300 text-center" id="file-name-display">Нажмите для выбора фото с телефона или ПК</span>
-                        <span class="text-xs text-slate-500 mt-1">PNG, JPG, WEBP до 5MB</span>
-                        <input type="file" id="add-photo-file" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                        <span class="text-sm text-slate-300 text-center" id="file-name-display">Нажмите для выбора нескольких фото (до 8)</span>
+                        <span class="text-xs text-slate-500 mt-1">PNG, JPG, WEBP</span>
+                        <input type="file" id="add-photo-file" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
                     </label>
                 </div>
 
@@ -386,18 +386,18 @@
         ];
 
         let cars = [
-            { id: 1, brand: 'BMW', model: 'X5', price: 48900, year: 2020, mileage: 62, engine: '3.0', transmission: 'Автомат', fuel: 'Дизель', region: 'Киев', image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80', phone: '+380675553535', desc: 'Идеальное состояние, официальная машина, полная комплектация.' },
-            { id: 2, brand: 'Audi', model: 'A6', price: 32000, year: 2019, mileage: 84, engine: '2.0', transmission: 'DSG', fuel: 'Бензин', region: 'Харьков', image: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80', phone: '+380501112233', desc: 'Машина вложений не требует. Первый владелец.' },
-            { id: 3, brand: 'Tesla', model: 'Model Y', price: 39500, year: 2022, mileage: 25, engine: 'Электро', transmission: 'Автомат', fuel: 'Электро', region: 'Киев', image: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80', phone: '+380639991122', desc: 'Состояние нового электромобиля. Автопилот, батарея в идеале.' },
-            { id: 4, brand: 'Volkswagen', model: 'Passat', price: 18500, year: 2017, mileage: 145, engine: '1.8', transmission: 'Механика', fuel: 'Газ / Бензин', region: 'Львов', image: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80', phone: '+380684445566', desc: 'Установлено качественное итальянское ГБО, расход радует.' },
-            { id: 5, brand: 'Toyota', model: 'Camry', price: 27800, year: 2021, mileage: 41, engine: '2.5', transmission: 'Вариатор', fuel: 'Гибрид', region: 'Днепр', image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=800&q=80', phone: '+380993332211', desc: 'Надежный городской седан в превосходном состоянии.' },
-            { id: 6, brand: 'BYD', model: 'Song Plus', price: 24500, year: 2023, mileage: 15, engine: '1.5', transmission: 'Робот', fuel: 'Гибрид', region: 'Одесса', image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80', phone: '+380678889900', desc: 'Современный китайский кроссовер, запас хода на электричестве до 100 км.' },
-            { id: 7, brand: 'Zeekr', model: '001', price: 41000, year: 2023, mileage: 18, engine: 'Электро', transmission: 'Автомат', fuel: 'Электро', region: 'Киев', image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80', phone: '+380931234578', desc: 'Премиальный электрокар, разгон до 100 за 3.8 секунды, полный привод.' },
-            { id: 8, brand: 'Skoda', model: 'Octavia', price: 14200, year: 2014, mileage: 185, engine: '1.6', transmission: 'Механика', fuel: 'Газ', region: 'Запорожье', image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80', phone: '+380504567890', desc: 'Экономичная рабочая лошадка, двигатель работает идеально как на бензине, так и на газе.' }
+            { id: 1, brand: 'BMW', model: 'X5', price: 48900, year: 2020, mileage: 62, engine: '3.0', transmission: 'Автомат', fuel: 'Дизель', region: 'Киев', images: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80'], phone: '+380675553535', desc: 'Идеальное состояние, официальная машина, полная комплектация.' },
+            { id: 2, brand: 'Audi', model: 'A6', price: 32000, year: 2019, mileage: 84, engine: '2.0', transmission: 'DSG', fuel: 'Бензин', region: 'Харьков', images: ['https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80'], phone: '+380501112233', desc: 'Машина вложений не требует. Первый владелец.' },
+            { id: 3, brand: 'Tesla', model: 'Model Y', price: 39500, year: 2022, mileage: 25, engine: 'Электро', transmission: 'Автомат', fuel: 'Электро', region: 'Киев', images: ['https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80'], phone: '+380639991122', desc: 'Состояние нового электромобиля. Автопилот, батарея в идеале.' },
+            { id: 4, brand: 'Volkswagen', model: 'Passat', price: 18500, year: 2017, mileage: 145, engine: '1.8', transmission: 'Механика', fuel: 'Газ / Бензин', region: 'Львов', images: ['https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80'], phone: '+380684445566', desc: 'Установлено качественное итальянское ГБО, расход радует.' },
+            { id: 5, brand: 'Toyota', model: 'Camry', price: 27800, year: 2021, mileage: 41, engine: '2.5', transmission: 'Вариатор', fuel: 'Гибрид', region: 'Днепр', images: ['https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=800&q=80'], phone: '+380993332211', desc: 'Надежный городской седан в превосходном состоянии.' },
+            { id: 6, brand: 'BYD', model: 'Song Plus', price: 24500, year: 2023, mileage: 15, engine: '1.5', transmission: 'Робот', fuel: 'Гибрид', region: 'Одесса', images: ['https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80'], phone: '+380678889900', desc: 'Современный китайский кроссовер, запас хода на электричестве до 100 км.' },
+            { id: 7, brand: 'Zeekr', model: '001', price: 41000, year: 2023, mileage: 18, engine: 'Электро', transmission: 'Автомат', fuel: 'Электро', region: 'Киев', images: ['https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80'], phone: '+380931234578', desc: 'Премиальный электрокар, разгон до 100 за 3.8 секунды, полный привод.' },
+            { id: 8, brand: 'Skoda', model: 'Octavia', price: 14200, year: 2014, mileage: 185, engine: '1.6', transmission: 'Механика', fuel: 'Газ', region: 'Запорожье', images: ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'], phone: '+380504567890', desc: 'Экономичная рабочая лошадка, двигатель работает идеально как на бензине, так и на газе.' }
         ];
 
         let favorites = [];
-        let temporaryUploadedImage = 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80';
+        let temporaryUploadedImages = ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
 
         document.addEventListener('DOMContentLoaded', () => {
             initSelects();
@@ -423,7 +423,6 @@
         function initSelects() {
             const brands = Object.keys(carModelsData).sort();
             
-            // Марки
             const filterBrandSelect = document.getElementById('filter-brand');
             filterBrandSelect.innerHTML = '<option value="">Все марки</option>' + 
                 brands.map(b => `<option value="${b}">${b}</option>`).join('');
@@ -432,7 +431,6 @@
             addBrandSelect.innerHTML = '<option value="">Выберите марку</option>' + 
                 brands.map(b => `<option value="${b}">${b}</option>`).join('');
 
-            // Объемы двигателей
             const filterEngineSelect = document.getElementById('filter-engine');
             filterEngineSelect.innerHTML = '<option value="">Любой объем</option>' + 
                 engineVolumes.map(vol => `<option value="${vol}">${vol === 'Электро' ? 'Электро' : vol + ' л'}</option>`).join('');
@@ -524,10 +522,11 @@
 
             grid.innerHTML = list.map(car => {
                 const isFav = favorites.includes(car.id);
+                const mainImg = (car.images && car.images.length > 0) ? car.images[0] : 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80';
                 return `
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition flex flex-col group shadow-lg">
                         <div class="relative h-48 overflow-hidden cursor-pointer" onclick="openCarModal(${car.id})">
-                            <img src="${car.image}" alt="${car.brand} ${car.model}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <img src="${mainImg}" alt="${car.brand} ${car.model}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             <button onclick="event.stopPropagation(); toggleFavorite(${car.id})" class="absolute top-3 right-3 bg-slate-950/70 backdrop-blur-md hover:bg-slate-950 text-white w-9 h-9 rounded-xl flex items-center justify-center transition border border-slate-700">
                                 <i class="fa-solid fa-heart ${isFav ? 'text-orange-500' : 'text-slate-400'}"></i>
                             </button>
@@ -548,7 +547,7 @@
                             </div>
                             <p class="text-xs text-slate-400 line-clamp-2 mb-4 flex-grow">${car.desc}</p>
                             <button onclick="openCarModal(${car.id})" class="w-full bg-slate-800 hover:bg-orange-600 hover:text-white text-slate-200 text-sm font-bold py-2.5 rounded-xl transition border border-slate-700 hover:border-orange-600">
-                                Подробнее
+                                Подробнее (${car.images ? car.images.length : 1} фото)
                             </button>
                         </div>
                     </div>
@@ -556,15 +555,23 @@
             }).join('');
         }
 
+        // Обработка нескольких фотографий (до 8 штук)
         function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                document.getElementById('file-name-display').innerText = `Выбрано: ${file.name}`;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    temporaryUploadedImage = e.target.result;
-                };
-                reader.readAsDataURL(file);
+            const files = event.target.files;
+            if (files && files.length > 0) {
+                temporaryUploadedImages = [];
+                const limit = Math.min(files.length, 8);
+                document.getElementById('file-name-display').innerText = `Выбрано фотографий: ${limit}`;
+
+                let loadedCount = 0;
+                for (let i = 0; i < limit; i++) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        temporaryUploadedImages.push(e.target.result);
+                        loadedCount++;
+                    };
+                    reader.readAsDataURL(files[i]);
+                }
             }
         }
 
@@ -572,15 +579,27 @@
             const car = cars.find(c => c.id === id);
             if (!car) return;
 
+            const imagesList = (car.images && car.images.length > 0) ? car.images : [car.image || 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
+            
             const modalContent = document.getElementById('modal-content');
             modalContent.innerHTML = `
+                <!-- Главное фото в модалке -->
                 <div class="h-72 sm:h-96 relative">
-                    <img src="${car.image}" alt="${car.brand} ${car.model}" class="w-full h-full object-cover">
+                    <img id="main-modal-img" src="${imagesList[0]}" alt="${car.brand} ${car.model}" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent"></div>
                     <span class="absolute bottom-4 left-6 bg-orange-600 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold">
                         ${car.region}
                     </span>
                 </div>
+                <!-- Миниатюры галереи (если больше 1 фото) -->
+                ${imagesList.length > 1 ? `
+                    <div class="flex items-center space-x-2 p-4 bg-slate-950 overflow-x-auto border-t border-slate-800">
+                        ${imagesList.map((img, idx) => `
+                            <img src="${img}" onclick="document.getElementById('main-modal-img').src='${img}'" class="w-20 h-16 object-cover rounded-xl cursor-pointer hover:border-2 hover:border-orange-500 transition flex-shrink-0 border border-slate-800">
+                        `).join('')}
+                    </div>
+                ` : ''}
+
                 <div class="p-6 sm:p-8 space-y-6">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
@@ -678,7 +697,7 @@
                 transmission: document.getElementById('add-transmission').value,
                 fuel: document.getElementById('add-fuel').value,
                 region: document.getElementById('add-region').value,
-                image: temporaryUploadedImage,
+                images: [...temporaryUploadedImages],
                 phone: document.getElementById('add-phone').value,
                 desc: document.getElementById('add-desc').value || 'Без описания.'
             };
@@ -688,9 +707,9 @@
             closeAddModal();
             document.getElementById('add-car-form').reset();
             document.getElementById('add-phone').value = '+380';
-            document.getElementById('file-name-display').innerText = 'Нажмите для выбора фото с телефона или ПК';
+            document.getElementById('file-name-display').innerText = 'Нажмите для выбора нескольких фото (до 8)';
             document.getElementById('add-model').innerHTML = '<option value="">Сначала выберите марку</option>';
-            temporaryUploadedImage = 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80';
+            temporaryUploadedImages = ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
         }
 
         function toggleFavorite(id) {
@@ -712,20 +731,23 @@
             if (favCars.length === 0) {
                 listContainer.innerHTML = `<p class="text-center text-slate-500 py-8 text-sm">Список избранного пуст</p>`;
             } else {
-                listContainer.innerHTML = favCars.map(car => `
-                    <div class="flex items-center justify-between bg-slate-950 p-3 rounded-2xl border border-slate-800">
-                        <div class="flex items-center space-x-3 cursor-pointer" onclick="closeFavoritesModal(); openCarModal(${car.id})">
-                            <img src="${car.image}" class="w-16 h-14 object-cover rounded-xl">
-                            <div>
-                                <h4 class="font-bold text-white text-sm">${car.brand} ${car.model}</h4>
-                                <span class="text-xs text-orange-400 font-bold">$${car.price.toLocaleString()}</span>
+                listContainer.innerHTML = favCars.map(car => {
+                    const mainImg = (car.images && car.images.length > 0) ? car.images[0] : 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80';
+                    return `
+                        <div class="flex items-center justify-between bg-slate-950 p-3 rounded-2xl border border-slate-800">
+                            <div class="flex items-center space-x-3 cursor-pointer" onclick="closeFavoritesModal(); openCarModal(${car.id})">
+                                <img src="${mainImg}" class="w-16 h-14 object-cover rounded-xl">
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">${car.brand} ${car.model}</h4>
+                                    <span class="text-xs text-orange-400 font-bold">$${car.price.toLocaleString()}</span>
+                                </div>
                             </div>
+                            <button onclick="toggleFavorite(${car.id})" class="text-slate-400 hover:text-red-400 p-2 transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
                         </div>
-                        <button onclick="toggleFavorite(${car.id})" class="text-slate-400 hover:text-red-400 p-2 transition">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             }
 
             document.getElementById('favorites-modal').classList.remove('hidden');
