@@ -118,8 +118,8 @@
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
                     <div class="form-group">
-                        <label>Объем (л)</label>
-                        <input type="text" id="add-engine" class="form-control" required placeholder="2.0 л">
+                        <label>Объем двигателя (л)</label>
+                        <input type="text" id="add-engine" class="form-control" required placeholder="Например: 2.0">
                     </div>
                     <div class="form-group">
                         <label>КПП</label>
@@ -127,6 +127,7 @@
                             <option value="Автомат">Автомат</option>
                             <option value="Механика">Механика</option>
                             <option value="Робот">Робот</option>
+                            <option value="Типтроник">Типтроник</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -169,7 +170,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 ATM-Авто. Облачная база данных Supabase подключена.</p>
+        <p>&copy; 2026 ATM-Авто. Все права защищены.</p>
     </footer>
 
     <script>
@@ -233,7 +234,7 @@
                         'Authorization': `Bearer ${SUPABASE_KEY}`
                     }
                 });
-                if (!response.ok) throw new Error('Ошибка авторизации или загрузки');
+                if (!response.ok) throw new Error('Ошибка загрузки');
                 allCars = await response.json();
                 renderCars(allCars);
             } catch (err) {
@@ -289,7 +290,7 @@
                 document.getElementById('add-model').innerHTML = '<option value="">Сначала выберите марку</option>';
                 temporaryUploadedImages = ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'];
                 
-                alert('Объявление успешно опубликовано в облаке!');
+                alert('Объявление успешно опубликовано!');
                 loadCarsFromSupabase();
             } catch (err) {
                 console.error('Ошибка сохранения:', err);
@@ -320,7 +321,7 @@
                             <div class="car-title">${car.brand} ${car.model} (${car.year})</div>
                             <div class="car-details">
                                 <span>${car.mileage} тыс. км</span> &bull; 
-                                <span>${car.engine}</span> &bull; 
+                                <span>${car.engine} л</span> &bull; 
                                 <span>${car.transmission}</span> &bull; 
                                 <span>${car.region}</span>
                             </div>
