@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <metacharset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CarPro — Автобазар Украины</title>
     <!-- Tailwind CSS CDN -->
@@ -58,10 +58,10 @@
                 <div class="space-y-4">
                     <!-- Search Text -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Марка / Модель</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Поиск по ключевым словам</label>
                         <div class="relative">
                             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-500 text-sm"></i>
-                            <input type="text" id="filter-search" oninput="filterCars()" placeholder="Например, BMW, Audi..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                            <input type="text" id="filter-search" oninput="filterCars()" placeholder="Например, пакет M-Sport..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
                         </div>
                     </div>
 
@@ -168,11 +168,21 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Марка</label>
-                        <input type="text" id="add-brand" required placeholder="например, BMW" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                        <select id="add-brand" onchange="updateModelsList()" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                            <option value="">Выберите марку</option>
+                            <option value="BMW">BMW</option>
+                            <option value="Audi">Audi</option>
+                            <option value="Mercedes-Benz">Mercedes-Benz</option>
+                            <option value="Volkswagen">Volkswagen</option>
+                            <option value="Toyota">Toyota</option>
+                            <option value="Skoda">Skoda</option>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Модель</label>
-                        <input type="text" id="add-model" required placeholder="например, X5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                        <select id="add-model" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                            <option value="">Сначала выберите марку</option>
+                        </select>
                     </div>
                 </div>
 
@@ -269,6 +279,16 @@
 
     <!-- JavaScript Application Logic -->
     <script>
+        // Dictionary of models per brand
+        const carModelsData = {
+            'BMW': ['X3', 'X5 M-Sport', 'X6', '3 Series', '5 Series', '7 Series', 'M4', 'i4'],
+            'Audi': ['A4', 'A6 Quattro', 'A8', 'Q3', 'Q5', 'Q7', 'Q8', 'e-tron'],
+            'Mercedes-Benz': ['C-Class', 'E-Class AMG', 'S-Class', 'GLC', 'GLE', 'GLS', 'G-Class'],
+            'Volkswagen': ['Passat B8', 'Golf', 'Tiguan', 'Touareg', 'Jetta', 'Polo'],
+            'Toyota': ['Camry Hybrid', 'RAV4', 'Land Cruiser 300', 'Corolla', 'Highlander', 'Prado'],
+            'Skoda': ['Octavia A8', 'Kodiaq', 'Superb', 'Karoq', 'Fabia']
+        };
+
         let cars = [
             { id: 1, brand: 'BMW', model: 'X5 M-Sport', price: 48900, year: 2020, mileage: 62, fuel: 'Дизель', region: 'Киев', image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80', phone: '+38 (067) 555-35-35', desc: 'Идеальное состояние, официальная машина, полная комплектация, обслуживалась на официальном сервисе.' },
             { id: 2, brand: 'Audi', model: 'A6 Quattro', price: 32000, year: 2019, mileage: 84, fuel: 'Бензин', region: 'Харьков', image: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80', phone: '+38 (050) 111-22-33', desc: 'Машина вложений не требует. Первый владелец, гаражное хранение, два комплекта резины.' },
@@ -281,10 +301,27 @@
         let favorites = [];
         let temporaryUploadedImage = 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80';
 
-        // Initialize App
         document.addEventListener('DOMContentLoaded', () => {
             filterCars();
         });
+
+        // Dynamic update of model choices based on selected brand
+        function updateModelsList() {
+            const brandSelect = document.getElementById('add-brand');
+            const modelSelect = document.getElementById('add-model');
+            const selectedBrand = brandSelect.value;
+
+            modelSelect.innerHTML = '';
+
+            if (!selectedBrand || !carModelsData[selectedBrand]) {
+                modelSelect.innerHTML = '<option value="">Сначала выберите марку</option>';
+                return;
+            }
+
+            const models = carModelsData[selectedBrand];
+            modelSelect.innerHTML = '<option value="">Выберите модель</option>' + 
+                models.map(model => `<option value="${model}">${model}</option>`).join('');
+        }
 
         function updatePriceLabel() {
             const val = document.getElementById('filter-price').value;
@@ -309,7 +346,6 @@
                 return true;
             });
 
-            // Sorting
             if (sortVal === 'newest') {
                 filtered.sort((a, b) => b.year - a.year);
             } else if (sortVal === 'price-asc') {
@@ -369,7 +405,6 @@
             }).join('');
         }
 
-        // Image file converter to Base64
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (file) {
@@ -382,7 +417,6 @@
             }
         }
 
-        // Modal Controls
         function openCarModal(id) {
             const car = cars.find(c => c.id === id);
             if (!car) return;
@@ -487,10 +521,10 @@
             closeAddModal();
             document.getElementById('add-car-form').reset();
             document.getElementById('file-name-display').innerText = 'Нажмите для выбора фото с устройства';
+            document.getElementById('add-model').innerHTML = '<option value="">Сначала выберите марку</option>';
             temporaryUploadedImage = 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80';
         }
 
-        // Favorites System
         function toggleFavorite(id) {
             const index = favorites.indexOf(id);
             if (index > -1) {
