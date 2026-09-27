@@ -61,29 +61,23 @@
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Поиск по ключевым словам</label>
                         <div class="relative">
                             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-500 text-sm"></i>
-                            <input type="text" id="filter-search" oninput="filterCars()" placeholder="Например, S-Class, пакет M..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                            <input type="text" id="filter-search" oninput="filterCars()" placeholder="Например, Passat, пакет M..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
                         </div>
                     </div>
 
                     <!-- Brand Select -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Марка</label>
-                        <select id="filter-brand" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                        <select id="filter-brand" onchange="onFilterBrandChange()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
                             <option value="">Все марки</option>
-                            <option value="Audi">Audi</option>
-                            <option value="BMW">BMW</option>
-                            <option value="Ford">Ford</option>
-                            <option value="Honda">Honda</option>
-                            <option value="Hyundai">Hyundai</option>
-                            <option value="Kia">Kia</option>
-                            <option value="Lexus">Lexus</option>
-                            <option value="Mazda">Mazda</option>
-                            <option value="Mercedes-Benz">Mercedes-Benz</option>
-                            <option value="Nissan">Nissan</option>
-                            <option value="Renault">Renault</option>
-                            <option value="Skoda">Skoda</option>
-                            <option value="Toyota">Toyota</option>
-                            <option value="Volkswagen">Volkswagen</option>
+                        </select>
+                    </div>
+
+                    <!-- Model Select -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Модель</label>
+                        <select id="filter-model" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                            <option value="">Все модели</option>
                         </select>
                     </div>
 
@@ -119,6 +113,7 @@
                             <option value="">Любое</option>
                             <option value="Бензин">Бензин</option>
                             <option value="Дизель">Дизель</option>
+                            <option value="Газ / Бензин">Газ / Бензин</option>
                             <option value="Электро">Электро</option>
                             <option value="Гибрид">Гибрид</option>
                         </select>
@@ -178,22 +173,8 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Марка</label>
-                        <select id="add-brand" onchange="updateModelsList()" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                        <select id="add-brand" onchange="updateModelsList('add')" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
                             <option value="">Выберите марку</option>
-                            <option value="Audi">Audi</option>
-                            <option value="BMW">BMW</option>
-                            <option value="Ford">Ford</option>
-                            <option value="Honda">Honda</option>
-                            <option value="Hyundai">Hyundai</option>
-                            <option value="Kia">Kia</option>
-                            <option value="Lexus">Lexus</option>
-                            <option value="Mazda">Mazda</option>
-                            <option value="Mercedes-Benz">Mercedes-Benz</option>
-                            <option value="Nissan">Nissan</option>
-                            <option value="Renault">Renault</option>
-                            <option value="Skoda">Skoda</option>
-                            <option value="Toyota">Toyota</option>
-                            <option value="Volkswagen">Volkswagen</option>
                         </select>
                     </div>
                     <div>
@@ -225,6 +206,7 @@
                         <select id="add-fuel" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
                             <option value="Бензин">Бензин</option>
                             <option value="Дизель">Дизель</option>
+                            <option value="Газ / Бензин">Газ / Бензин</option>
                             <option value="Электро">Электро</option>
                             <option value="Гибрид">Гибрид</option>
                         </select>
@@ -299,7 +281,7 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Полный структурированный перечень марок и полный спектр их моделей
+        // Исчерпывающий справочник марок и моделей автомобилей
         const carModelsData = {
             'Audi': ['80', '100', 'A1', 'A2', 'A3', 'A4', 'A4 Allroad', 'A5', 'A6', 'A6 Allroad', 'A7', 'A8', 'Q2', 'Q3', 'Q4 e-tron', 'Q5', 'Q7', 'Q8', 'R8', 'RS3', 'RS4', 'RS5', 'RS6', 'RS7', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'TT', 'e-tron', 'e-tron GT'],
             'BMW': ['1 Series', '2 Series', '3 Series', '4 Series', '5 Series', '6 Series', '7 Series', '8 Series', 'i3', 'i4', 'i7', 'iX', 'M2', 'M3', 'M4', 'M5', 'M8', 'X1', 'X2', 'X3', 'X4', 'X5', 'X6', 'X7', 'Z4'],
@@ -309,19 +291,30 @@
             'Kia': ['Ceed', 'Cerato', 'EV6', 'K5', 'Mohave', 'Niro', 'Optima', 'Picanto', 'Rio', 'Sorento', 'Soul', 'Sportage', 'Stinger'],
             'Lexus': ['CT 200h', 'ES 250', 'ES 300h', 'ES 350', 'GS 300', 'GX 460', 'IS 250', 'LC 500', 'LS 500', 'LX 470', 'LX 570', 'LX 600', 'NX 200', 'NX 300h', 'NX 350', 'RC 350', 'RX 300', 'RX 350', 'RX 450h', 'RZ 450e', 'UX 250h'],
             'Mazda': ['2', '3', '6', 'CX-3', 'CX-30', 'CX-5', 'CX-60', 'CX-9', 'MX-5 Miata', 'RX-8'],
-            'Mercedes-Benz': ['A-Class', 'B-Class', 'C-Class', 'CLA', 'CLK', 'CLS', 'E-Class', 'EQA', 'EQB', 'EQC', 'EQE', 'EQS', 'G-Class', 'GL', 'GLA', 'GLB', 'GLC', 'GLE', 'GLK', 'GLS', 'ML-Class', 'R-Class', 'S-Class', 'SL', 'SLC', 'SLK', 'Sprinter', 'V-Class', 'Vito'],
+            'Mercedes-Benz': [
+                '190', 'A-Class', 'AMG GT', 'B-Class', 'C-Class', 'Citan', 'CL', 'CLA', 'CLC', 'CLK', 'CLS', 
+                'E-Class', 'EQA', 'EQB', 'EQC', 'EQE', 'EQS', 'G-Class', 'GL', 'GLA', 'GLB', 'GLC', 'GLE', 
+                'GLK', 'GLS', 'Maybach', 'ML-Class', 'R-Class', 'S-Class', 'SL', 'SLC', 'SLK', 'Sprinter', 
+                'V-Class', 'Vaneo', 'Viano', 'Vito', 'W123', 'W124', 'W140', 'W201', 'W210', 'W211'
+            ],
             'Nissan': ['Almera', 'Altima', 'Armada', 'GT-R', 'Juke', 'Leaf', 'Maxima', 'Micra', 'Murano', 'Navara', 'Note', 'Pathfinder', 'Patrol', 'Qashqai', 'Rogue', 'Sentra', 'Teana', 'Terrano', 'Tiida', 'X-Trail'],
             'Renault': ['Captur', 'Clio', 'Duster', 'Espace', 'Fluence', 'Kadjar', 'Kangoo', 'Koleos', 'Logan', 'Megane', 'Sandero', 'Scenic', 'Symbol', 'Trafic', 'Zoe'],
             'Skoda': ['Fabia', 'Kamiq', 'Karoq', 'Kodiaq', 'Octavia', 'Rapid', 'Roomster', 'Scala', 'Superb', 'Yeti'],
             'Toyota': ['Auris', 'Avalon', 'Avensis', 'Aygo', 'C-HR', 'Camry', 'Corolla', 'FJ Cruiser', 'Fortuner', 'GT86', 'Highlander', 'Hilux', 'Land Cruiser 100', 'Land Cruiser 200', 'Land Cruiser 300', 'Land Cruiser Prado', 'Matrix', 'Prius', 'RAV4', 'Sequoia', 'Sienna', 'Supra', 'Tacoma', 'Tundra', 'Venza', 'Yaris'],
-            'Volkswagen': ['Amarok', 'Arteon', 'Beetle', 'Bora', 'Caddy', 'Caravelle', 'CC', 'EOS', 'Golf', 'ID.3', 'ID.4', 'ID.6', 'Jetta', 'Multivan', 'Passat', 'Polo', 'Scirocco', 'Sharan', 'T-Cross', 'T-Roc', 'Taos', 'Tiguan', 'Touareg', 'Touran', 'Transporter']
+            'Volkswagen': [
+                'Amarok', 'Arteon', 'Atlas', 'Beetle', 'Bora', 'Caddy', 'California', 'Caravelle', 'CC', 
+                'Corrado', 'Crafter', 'EOS', 'Fox', 'Golf', 'Golf Plus', 'ID.3', 'ID.4', 'ID.5', 'ID.6', 
+                'ID.Buzz', 'Jetta', 'LT', 'Lupo', 'Multivan', 'Passat', 'Passat CC', 'Phaeton', 'Polo', 
+                'Routan', 'Santana', 'Scirocco', 'Sharan', 'T-Cross', 'T-Roc', 'Taos', 'Tiguan', 
+                'Touareg', 'Touran', 'Transporter', 'Up!', 'Vento'
+            ]
         };
 
         let cars = [
             { id: 1, brand: 'BMW', model: 'X5', price: 48900, year: 2020, mileage: 62, fuel: 'Дизель', region: 'Киев', image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80', phone: '+38 (067) 555-35-35', desc: 'Идеальное состояние, официальная машина, полная комплектация, обслуживалась на официальном сервисе.' },
             { id: 2, brand: 'Audi', model: 'A6', price: 32000, year: 2019, mileage: 84, fuel: 'Бензин', region: 'Харьков', image: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80', phone: '+38 (050) 111-22-33', desc: 'Машина вложений не требует. Первый владелец, гаражное хранение, два комплекта резины.' },
             { id: 3, brand: 'Mercedes-Benz', model: 'E-Class', price: 42500, year: 2020, mileage: 70, fuel: 'Гибрид', region: 'Одесса', image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&q=80', phone: '+38 (093) 777-88-99', desc: 'Панорамная крыша, акустика Burmester, вентиляция сидений, состояние нового авто.' },
-            { id: 4, brand: 'Volkswagen', model: 'Passat', price: 21500, year: 2018, mileage: 135, fuel: 'Дизель', region: 'Львов', image: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80', phone: '+38 (068) 444-55-66', desc: 'Пригнана из Европы, растаможена, без подкрасов, оригинальный пробег.' },
+            { id: 4, brand: 'Volkswagen', model: 'Passat', price: 21500, year: 2018, mileage: 135, fuel: 'Газ / Бензин', region: 'Львов', image: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80', phone: '+38 (068) 444-55-66', desc: 'Пригнана из Европы, установлена качественная газовая установка, растаможена.' },
             { id: 5, brand: 'Toyota', model: 'Camry', price: 27800, year: 2021, mileage: 41, fuel: 'Гибрид', region: 'Днепр', image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=800&q=80', phone: '+38 (099) 333-22-11', desc: 'Надежный городской седан в превосходном состоянии. Расход 5л на 100км.' },
             { id: 6, brand: 'Skoda', model: 'Octavia', price: 23900, year: 2022, mileage: 29, fuel: 'Бензин', region: 'Киев', image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80', phone: '+38 (063) 123-45-67', desc: 'Состояние нового автомобиля с салона. На гарантии.' }
         ];
@@ -330,24 +323,47 @@
         let temporaryUploadedImage = 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80';
 
         document.addEventListener('DOMContentLoaded', () => {
+            initBrandSelects();
             filterCars();
         });
 
-        function updateModelsList() {
-            const brandSelect = document.getElementById('add-brand');
-            const modelSelect = document.getElementById('add-model');
-            const selectedBrand = brandSelect.value;
+        // Заполнение выпадающих списков марок (и в фильтре, и в модалке добавления)
+        function initBrandSelects() {
+            const brands = Object.keys(carModelsData).sort();
+            
+            const filterBrandSelect = document.getElementById('filter-brand');
+            filterBrandSelect.innerHTML = '<option value="">Все марки</option>' + 
+                brands.map(b => `<option value="${b}">${b}</option>`).join('');
 
-            modelSelect.innerHTML = '';
+            const addBrandSelect = document.getElementById('add-brand');
+            addBrandSelect.innerHTML = '<option value="">Выберите марку</option>' + 
+                brands.map(b => `<option value="${b}">${b}</option>`).join('');
+        }
 
-            if (!selectedBrand || !carModelsData[selectedBrand]) {
-                modelSelect.innerHTML = '<option value="">Сначала выберите марку</option>';
-                return;
+        // Динамическое обновление моделей для фильтра или формы добавления
+        function updateModelsList(type) {
+            if (type === 'filter') {
+                const brand = document.getElementById('filter-brand').value;
+                const modelSelect = document.getElementById('filter-model');
+                
+                modelSelect.innerHTML = '<option value="">Все модели</option>';
+                if (brand && carModelsData[brand]) {
+                    modelSelect.innerHTML += carModelsData[brand].map(m => `<option value="${m}">${m}</option>`).join('');
+                }
+                filterCars();
+            } else if (type === 'add') {
+                const brand = document.getElementById('add-brand').value;
+                const modelSelect = document.getElementById('add-model');
+                
+                modelSelect.innerHTML = '<option value="">Выберите модель</option>';
+                if (brand && carModelsData[brand]) {
+                    modelSelect.innerHTML += carModelsData[brand].map(m => `<option value="${m}">${m}</option>`).join('');
+                }
             }
+        }
 
-            const models = carModelsData[selectedBrand];
-            modelSelect.innerHTML = '<option value="">Выберите модель</option>' + 
-                models.map(model => `<option value="${model}">${model}</option>`).join('');
+        function onFilterBrandChange() {
+            updateModelsList('filter');
         }
 
         function updatePriceLabel() {
@@ -358,6 +374,7 @@
         function filterCars() {
             const searchTxt = document.getElementById('filter-search').value.toLowerCase();
             const brandVal = document.getElementById('filter-brand').value;
+            const modelVal = document.getElementById('filter-model').value;
             const regionVal = document.getElementById('filter-region').value;
             const priceVal = Number(document.getElementById('filter-price').value);
             const fuelVal = document.getElementById('filter-fuel').value;
@@ -367,6 +384,7 @@
                 const fullText = `${car.brand} ${car.model} ${car.desc}`.toLowerCase();
                 if (searchTxt && !fullText.includes(searchTxt)) return false;
                 if (brandVal && car.brand !== brandVal) return false;
+                if (modelVal && car.model !== modelVal) return false;
                 if (regionVal && car.region !== regionVal) return false;
                 if (car.price > priceVal) return false;
                 if (fuelVal && car.fuel !== fuelVal) return false;
@@ -432,14 +450,13 @@
             }).join('');
         }
 
-        // Исправленная функция чтения изображения с компьютера
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (file) {
                 document.getElementById('file-name-display').innerText = `Выбрано: ${file.name}`;
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    temporaryUploadedImage = e.target.result; // Сохраняем DataURL картинки
+                    temporaryUploadedImage = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
@@ -599,6 +616,7 @@
         function resetFilters() {
             document.getElementById('filter-search').value = '';
             document.getElementById('filter-brand').value = '';
+            document.getElementById('filter-model').innerHTML = '<option value="">Все модели</option>';
             document.getElementById('filter-region').value = '';
             document.getElementById('filter-price').value = 150000;
             document.getElementById('filter-fuel').value = '';
