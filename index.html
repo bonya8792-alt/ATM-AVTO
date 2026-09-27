@@ -173,9 +173,9 @@
     </footer>
 
     <script>
-        // ВНИМАНИЕ: Замените SUPABASE_KEY на ваш актуальный публичный анонимный ключ (anon public) из панели Supabase!
+        // Интегрированные ключи доступа Supabase
         const SUPABASE_URL = 'https://eyvewlhxsczunmrdfcjs.supabase.co';
-        const SUPABASE_KEY = 'ВАШ_АКТУАЛЬНЫЙ_ANON_KEY_ИЗ_SUPABASE';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5dmV3bGh4c2N6dW5tcmRmY2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1MTU2NTMsImV4cCI6MjEwNjA5MTY1M30._gAqkRGaeyPjaigFJG4vBaSri7pSam5aw8uLrrjN0Vg';
 
         let allCars = [];
         let currentUserPhone = localStorage.getItem('atm_current_user') || '';
@@ -294,7 +294,7 @@
                 loadCarsFromSupabase();
             } catch (err) {
                 console.error('Ошибка сохранения:', err);
-                alert('Ошибка авторизации ключа API. Проверьте SUPABASE_KEY.');
+                alert('Не удалось сохранить объявление. Проверьте консоль (F12).');
             }
         }
 
