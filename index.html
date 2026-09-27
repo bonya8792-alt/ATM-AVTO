@@ -107,6 +107,19 @@
                         </select>
                     </div>
 
+                    <!-- НОВОЕ: Выбор года ОТ и ДО -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Год выпуска</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <select id="filter-year-from" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                                <option value="">От</option>
+                            </select>
+                            <select id="filter-year-to" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
+                                <option value="">До</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Кузов</label>
                         <select id="filter-body" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
@@ -230,9 +243,7 @@
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
-            <div id="exchange-modal-body" class="space-y-4">
-                <!-- Динамически заполняется -->
-            </div>
+            <div id="exchange-modal-body" class="space-y-4"></div>
         </div>
     </div>
 
@@ -519,6 +530,7 @@
         window.onload = function() {
             initBrandSelects();
             initEngineSelects();
+            initYearSelects(); // Генерация списка годов для фильтра
             renderCars(cars);
             updateFavoritesUI();
             updateUserCabinetUI();
@@ -540,6 +552,18 @@
                 filterEngine.innerHTML += `<option value="${vol}">${vol === 'Электро' ? 'Электро' : vol + ' л'}</option>`;
                 addEngine.innerHTML += `<option value="${vol}">${vol === 'Электро' ? 'Электро' : vol + ' л'}</option>`;
             });
+        }
+
+        // Автоматическое заполнение выпадающих списков годов (от 1990 до текущего 2026)
+        function initYearSelects() {
+            const yearFromSelect = document.getElementById('filter-year-from');
+            const yearToSelect = document.getElementById('filter-year-to');
+            const currentYear = 2026;
+
+            for (let y = currentYear; y >= 1990; y--) {
+                yearFromSelect.innerHTML += `<option value="${y}">${y}</option>`;
+                yearToSelect.innerHTML += `<option value="${y}">${y}</option>`;
+            }
         }
 
         function onFilterBrandChange() {
@@ -575,6 +599,8 @@
             const search = document.getElementById('filter-search').value.toLowerCase();
             const brand = document.getElementById('filter-brand').value;
             const model = document.getElementById('filter-model').value;
+            const yearFrom = document.getElementById('filter-year-from').value ? Number(document.getElementById('filter-year-from').value) : null;
+            const yearTo = document.getElementById('filter-year-to').value ? Number(document.getElementById('filter-year-to').value) : null;
             const body = document.getElementById('filter-body').value;
             const drive = document.getElementById('filter-drive').value;
             const engine = document.getElementById('filter-engine').value;
@@ -585,12 +611,16 @@
             const sortOrder = document.getElementById('sort-order').value;
 
             let filtered = cars.filter(car => {
-                // Если у старых объявлений нет категории, по умолчанию считаем их "Авто"
                 const carCat = car.category || 'Авто';
                 const matchCategory = !category || carCat === category;
                 const matchSearch = (car.brand + ' ' + car.model + ' ' + car.desc).toLowerCase().includes(search);
                 const matchBrand = !brand || car.brand === brand;
                 const matchModel = !model || car.model === model;
+                
+                // Проверка диапазона годов
+                const matchYearFrom = !yearFrom || car.year >= yearFrom;
+                const matchYearTo = !yearTo || car.year <= yearTo;
+
                 const matchBody = !body || car.bodyType === body;
                 const matchDrive = !drive || car.driveType === drive;
                 const matchEngine = !engine || car.engine === engine;
@@ -598,7 +628,8 @@
                 const matchRegion = !region || car.region === region;
                 const matchPrice = car.price <= maxPrice;
                 const matchFuel = !fuel || car.fuel === fuel;
-                return matchCategory && matchSearch && matchBrand && matchModel && matchBody && matchDrive && matchEngine && matchTransmission && matchRegion && matchPrice && matchFuel;
+
+                return matchCategory && matchSearch && matchBrand && matchModel && matchYearFrom && matchYearTo && matchBody && matchDrive && matchEngine && matchTransmission && matchRegion && matchPrice && matchFuel;
             });
 
             if (sortOrder === 'price-asc') filtered.sort((a, b) => a.price - b.price);
@@ -613,6 +644,8 @@
             document.getElementById('filter-search').value = '';
             document.getElementById('filter-brand').value = '';
             document.getElementById('filter-model').innerHTML = '<option value="">Все модели</option>';
+            document.getElementById('filter-year-from').value = '';
+            document.getElementById('filter-year-to').value = '';
             document.getElementById('filter-body').value = '';
             document.getElementById('filter-drive').value = '';
             document.getElementById('filter-engine').value = '';
@@ -643,7 +676,6 @@
                 const isFav = favorites.includes(car.id);
                 const carCat = car.category || 'Авто';
                 
-                // Бейджик категории для карточки
                 let catBadgeColor = 'bg-orange-500/20 text-orange-400 border-orange-500/30';
                 if (carCat === 'Авто нерастаможенные') catBadgeColor = 'bg-blue-500/20 text-blue-400 border-blue-500/30';
                 if (carCat === 'Авто после ДТП') catBadgeColor = 'bg-red-500/20 text-red-400 border-red-500/30';
@@ -792,7 +824,6 @@
             document.getElementById('car-modal').classList.remove('flex');
         }
 
-        // --- ЛОГИКА ОБМЕНА АВТОМОБИЛЕЙ ---
         function openExchangeModal(targetCarId) {
             if (!currentUser) {
                 alert('Для предложения обмена необходимо войти в личный кабинет по номеру телефона.');
@@ -960,7 +991,6 @@
             }
         }
 
-        // --- ЛОГИКА ДОБАВЛЕНИЯ АВТО И КАБИНЕТА ---
         function openAddModal() {
             document.getElementById('add-modal').classList.remove('hidden');
             document.getElementById('add-modal').classList.add('flex');
