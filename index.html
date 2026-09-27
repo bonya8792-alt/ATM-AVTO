@@ -77,7 +77,6 @@
                 </div>
 
                 <div class="space-y-4">
-                    <!-- Search Text -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Поиск по ключевым словам</label>
                         <div class="relative">
@@ -86,7 +85,6 @@
                         </div>
                     </div>
 
-                    <!-- Brand Select -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Марка</label>
                         <select id="filter-brand" onchange="onFilterBrandChange()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
@@ -94,7 +92,6 @@
                         </select>
                     </div>
 
-                    <!-- Model Select -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Модель</label>
                         <select id="filter-model" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
@@ -102,7 +99,6 @@
                         </select>
                     </div>
 
-                    <!-- Region Select -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Регион</label>
                         <select id="filter-region" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
@@ -117,7 +113,6 @@
                         </select>
                     </div>
 
-                    <!-- Price Range -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Цена до ($)</label>
                         <input type="range" id="filter-price" min="5000" max="150000" step="5000" value="150000" oninput="filterCars(); updatePriceLabel();" class="w-full accent-orange-500 bg-slate-800 cursor-pointer">
@@ -127,7 +122,6 @@
                         </div>
                     </div>
 
-                    <!-- Fuel Type -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Тип топлива</label>
                         <select id="filter-fuel" onchange="filterCars()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition text-white">
@@ -146,7 +140,6 @@
 
         <!-- Listings Section -->
         <section class="lg:col-span-3 space-y-6">
-            <!-- Sort Bar -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p class="text-sm text-slate-400"><span id="cars-count" class="text-white font-bold">0</span> объявлений найдено</p>
                 <div class="flex items-center space-x-3 w-full sm:w-auto">
@@ -159,7 +152,6 @@
                 </div>
             </div>
 
-            <!-- Cars Grid -->
             <div id="cars-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 <!-- Dynamic Content -->
             </div>
@@ -180,19 +172,20 @@
 
     <!-- Add Car Modal -->
     <div id="add-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-5 sm:p-8 shadow-2xl relative my-8">
             <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
                 <h3 class="text-xl font-bold flex items-center space-x-2">
                     <i class="fa-solid fa-circle-plus text-orange-500"></i>
                     <span>Добавить объявление</span>
                 </h3>
-                <button onclick="closeAddModal()" class="text-slate-400 hover:text-white transition">
+                <button onclick="closeAddModal()" class="text-slate-400 hover:text-white transition p-2">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
 
             <form id="add-car-form" onsubmit="handleAddCar(event)" class="space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Исправлено: Гарантированный показ марки и модели друг за другом на мобильных -->
+                <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Марка</label>
                         <select id="add-brand" onchange="updateModelsList('add')" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
@@ -654,7 +647,6 @@
                 `).join('');
             }
 
-            document.getElementById('favorites-favorites-modal')?.classList.remove('hidden'); // safe check
             document.getElementById('favorites-modal').classList.remove('hidden');
             document.getElementById('favorites-modal').classList.add('flex');
         }
