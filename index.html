@@ -172,7 +172,7 @@
 
     <!-- Add Car Modal -->
     <div id="add-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-5 sm:p-8 shadow-2xl relative my-8">
+        <div id="add-modal-container" class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-5 sm:p-8 shadow-2xl relative my-8 max-h-[85vh] overflow-y-auto">
             <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
                 <h3 class="text-xl font-bold flex items-center space-x-2">
                     <i class="fa-solid fa-circle-plus text-orange-500"></i>
@@ -184,7 +184,7 @@
             </div>
 
             <form id="add-car-form" onsubmit="handleAddCar(event)" class="space-y-4">
-                <!-- Исправлено: Гарантированный показ марки и модели друг за другом на мобильных -->
+                <!-- Марка и Модель теперь первыми сверху -->
                 <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Марка</label>
@@ -577,8 +577,12 @@
         }
 
         function openAddModal() {
-            document.getElementById('add-modal').classList.remove('hidden');
-            document.getElementById('add-modal').classList.add('flex');
+            const modal = document.getElementById('add-modal');
+            const container = document.getElementById('add-modal-container');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            // Автоматически прокручиваем модальное окно на самый верх для телефонов
+            if (container) container.scrollTop = 0;
         }
 
         function closeAddModal() {
